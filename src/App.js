@@ -6,9 +6,6 @@ import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import themeFile from './util/theme';
 import jwtDecode from 'jwt-decode';
 import AuthRoute from './util/AuthRoute';
-// Redux
-//import { Provider } from 'react-redux';
-//import store from './redux/store';
 // Components
 import Navbar from './components/Navbar';
 // Pages

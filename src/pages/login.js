@@ -13,10 +13,6 @@ import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import theme from '../util/AuthTheme';
 
-// Redux stuff
-//import { connect } from 'react-redux';
-//import { loginUser } from '../redux/actions/userActions';
-
 
 const styles = theme.AuthTheme;
 
@@ -150,9 +146,6 @@ class Login extends Component {
 
 Login.propTypes = {
     classes: PropTypes.object.isRequired
-    //loginUser: PropTypes.func.isRequired,
-    //user: PropTypes.object.isRequired,
-    //UI: PropTypes.object.isRequired
 }
 
 export default withStyles(styles)(Login);

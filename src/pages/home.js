@@ -5,7 +5,6 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
-import lifecycle from 'react-pure-lifecycle';
 import Scream from '../components/Scream';
 import Button from '@material-ui/core/Button';
 
