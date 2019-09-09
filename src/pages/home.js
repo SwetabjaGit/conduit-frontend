@@ -63,9 +63,6 @@ const styles = theme => ({
     button: {
         margin: theme.spacing(1),
     },
-    progress: {
-        margin: theme.spacing(2),
-    }
 });
 
 const methods = {
@@ -168,6 +165,8 @@ class Home extends Component {
                 <Grid container>
                     <Grid item sm={8} xs={12}>
                         { recentScreamsMarkup }
+                        <br />
+                        { fetching ? <CircularProgress className={classes.progress} color="secondary" /> : <span></span> }
                     </Grid>
                     <Grid item sm={4} xs={12}>
                         <Paper className={ this.props.classes.paper }>
@@ -200,7 +199,6 @@ class Home extends Component {
                     </Grid>
                 </Grid>
                 <br />
-                { fetching ? <CircularProgress className={classes.progress} color="secondary" /> : <span></span> }
             </div>
         )
     }
