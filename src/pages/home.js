@@ -7,10 +7,12 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import Scream from '../components/Scream';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Redux stuff
 import { connect } from 'react-redux';
 import { fetchUserData } from '../redux/actions/userActions';
+import { fetchScreams, setScreams } from '../redux/actions/dataActions';
 
 
 const papersList = [
@@ -61,6 +63,9 @@ const styles = theme => ({
     button: {
         margin: theme.spacing(1),
     },
+    progress: {
+        margin: theme.spacing(2),
+    }
 });
 
 const methods = {
@@ -110,13 +115,19 @@ class Home extends Component {
     }
 
     componentDidMount(){
-        fetchScreamsUsingPromise(this.changeState);
+        //fetchScreamsUsingPromise(this.changeState);
+        this.props.fetchScreams();
     }
 
     render() {
 
-        let recentScreamsMarkup = this.state.screams ? (
-            this.state.screams.map(scream => 
+        const {
+            classes,
+            data: { fetching, screams }
+        } = this.props;
+
+        let recentScreamsMarkup = screams ? (
+            screams.map(scream => 
                 <Scream
                     key={ scream.screamId }
                     scream={ scream } 
@@ -126,11 +137,11 @@ class Home extends Component {
             <p>Loading...</p>
         );
 
-        let renderScreams = this.state.screams ? (
-            this.state.screams.map(scream => 
+        let renderScreams = screams ? (
+            screams.map(scream => 
                 <Paper
                     key={ scream.screamId }
-                    className={ this.props.classes.paper }>
+                    className={ classes.paper }>
                     <Typography variant="h5" component="h3">
                         { scream.body }
                     </Typography>
@@ -153,7 +164,7 @@ class Home extends Component {
         );
 
         return (
-            <div className={ this.props.classes.root }>
+            <div className={ classes.root }>
                 <Grid container>
                     <Grid item sm={8} xs={12}>
                         { recentScreamsMarkup }
@@ -188,6 +199,8 @@ class Home extends Component {
                         </Paper>
                     </Grid>
                 </Grid>
+                <br />
+                { fetching ? <CircularProgress className={classes.progress} color="secondary" /> : <span></span> }
             </div>
         )
     }
@@ -197,6 +210,8 @@ class Home extends Component {
 Home.propTypes = {
     classes: PropTypes.object.isRequired,
     fetchUserData: PropTypes.func.isRequired,
+    fetchScreams: PropTypes.func.isRequired,
+    setScreams: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     UI: PropTypes.object.isRequired
     //screams: PropTypes.object.isRequired
@@ -204,11 +219,14 @@ Home.propTypes = {
 
 const mapStateToProps = (state) => ({
     user: state.user,
-    UI: state.UI
+    UI: state.UI,
+    data: state.data
 });
 
 const mapActionsToProps = {
-    fetchUserData
+    fetchUserData,
+    fetchScreams,
+    setScreams
 };
 
 export default connect(

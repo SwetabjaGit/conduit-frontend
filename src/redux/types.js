@@ -11,3 +11,6 @@ export const LOADING_UI = 'LOADING_UI';
 export const UNLOADING_UI = 'UNLOADING_UI';
 
 // data reducer types
+export const FETCHING_SCREAMS = 'FETCH_SCREAMS';
+export const SET_SCREAMS = 'SET_SCREAMS';
+export const FETCHED_SCREAMS = 'FETCHED_SCREAMS';
