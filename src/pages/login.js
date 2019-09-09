@@ -11,52 +11,14 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import theme from '../util/AuthTheme';
 
 // Redux stuff
 //import { connect } from 'react-redux';
 //import { loginUser } from '../redux/actions/userActions';
 
 
-const styles = theme => ({
-    container: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      width: 400,
-    },
-    dense: {
-      marginTop: 19,
-    },
-    menu: {
-      width: 200,
-    },
-    form: {
-        textAlign: 'center'
-    },
-    image: {
-        margin: '20px auto 20px auto'
-    },
-    pageTitle: {
-        margin: '20px auto 20px auto'
-    },
-    button: {
-        margin: 30
-    },
-    customError: {
-        color: 'red',
-        fontSize: '0.8rem'
-    },
-    progress: {
-        margin: theme.spacing(2),
-    }
-});
-
-/* const styles = theme => ({
-    ...theme
-}); */
+const styles = theme.AuthTheme;
 
 class Login extends Component {
 
