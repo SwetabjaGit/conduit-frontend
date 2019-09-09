@@ -7,8 +7,8 @@ import themeFile from './util/theme';
 import jwtDecode from 'jwt-decode';
 import AuthRoute from './util/AuthRoute';
 // Redux
-//import { Provider } from 'react-redux';
-//import store from './redux/store';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 // Components
 import Navbar from './components/Navbar';
 // Pages
@@ -40,6 +40,7 @@ class App extends Component {
     render() {
         return (
             <MuiThemeProvider theme={theme}>
+                <Provider store={store}>
                     <Router>
                         <Navbar />
                         <div className="container">
@@ -67,6 +68,7 @@ class App extends Component {
                             </Switch>
                         </div>
                     </Router>
+                </Provider>
             </MuiThemeProvider>
         );
     }

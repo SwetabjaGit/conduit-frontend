@@ -5,9 +5,13 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
-import lifecycle from 'react-pure-lifecycle';
 import Scream from '../components/Scream';
 import Button from '@material-ui/core/Button';
+
+// Redux stuff
+import { connect } from 'react-redux';
+import { fetchUserData } from '../redux/actions/userActions';
+
 
 const papersList = [
     {
@@ -91,17 +95,6 @@ const fetchScreamsUsingPromise = (callback) => {
         });
 }
 
-const fetchUserData = async () => {
-    console.log('fetchUserData');
-    const FBIdToken = await localStorage.getItem('FBIdToken');
-    axios.defaults.headers.common['Authorization'] = FBIdToken;
-    console.log('Working', FBIdToken);
-    axios.get('/user')
-        .then((res) => {
-            console.log(res.data);
-        })
-        .catch(err => console.log(err));
-}
 
 class Home extends Component {
 
@@ -189,7 +182,7 @@ class Home extends Component {
                                 variant="contained" 
                                 color="primary" 
                                 className={this.props.classes.button} 
-                                onClick={ fetchUserData } >
+                                onClick={ this.props.fetchUserData } >
                                 Get User Data
                             </Button>
                         </Paper>
@@ -202,67 +195,23 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    fetchUserData: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
+    UI: PropTypes.object.isRequired
     //screams: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(Home);
+const mapStateToProps = (state) => ({
+    user: state.user,
+    UI: state.UI
+});
 
+const mapActionsToProps = {
+    fetchUserData
+};
 
-/* const Home = props => {
-    const { classes } = props;
-    const papersList = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth'];
-    
-    return (
-        <div className={classes.root}>
-            <Grid container>
-                <Grid item sm={8} xs={12}>
-                    { papersList.map(data => 
-                        <Paper className={classes.paper}>
-                            <Typography variant="h5" component="h3">
-                                This is a sheet of paper.
-                            </Typography>
-                            <Typography component="p">
-                                This is { data } item.
-                            </Typography>
-                        </Paper>
-                    )}
-                </Grid>
-                <Grid item sm={4} xs={12} >
-                    <Paper className={classes.paper}>
-                        <Typography variant="h5" component="h3">
-                            Profile Section
-                        </Typography>
-                        <Typography component="p">
-                            This is avatar.
-                        </Typography>
-                        <Typography component="p">
-                            This section contains profile info 1.
-                        </Typography>
-                        <Typography component="p">
-                            This section contains profile info 2.
-                        </Typography>
-                        <Typography component="p">
-                            This section contains profile info 3.
-                        </Typography>
-                        <Typography component="p">
-                            This section contains profile info 4.
-                        </Typography>
-                        <Typography component="p">
-                            This section contains profile info 5.
-                        </Typography>             
-                    </Paper>
-                </Grid>
-            </Grid>
-        </div>
-    )
-}
-const funcs = {
-    expDef1() {
-        withStyles(styles)(Home);
-    },
-    expDef2() {
-        lifecycle(methods)(Home);
-    }
-}
-export default funcs; */
+export default connect(
+    mapStateToProps,
+    mapActionsToProps
+)(withStyles(styles)(Home));
