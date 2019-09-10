@@ -28,8 +28,13 @@ class Signup extends Component {
             password: '',
             confirmPassword: '',
             handle: '',
-            loading: false,
             errors: {}
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.UI.errors){
+            this.setState({ errors: nextProps.UI.errors });
         }
     }
 
