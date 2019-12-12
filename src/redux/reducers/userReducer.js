@@ -1,11 +1,7 @@
 import {
   SET_USER,
   SET_AUTHENTICATED,
-  SET_UNAUTHENTICATED,
-  LOADING_USER,
-  LIKE_SCREAM,
-  UNLIKE_SCREAM,
-  MARK_NOTIFICATIONS_READ
+  SET_UNAUTHENTICATED
 } from '../types';
 
 const initialState = {
@@ -24,10 +20,7 @@ export default (state = initialState, action) => {
         authenticated: true
       };
     case SET_UNAUTHENTICATED:
-      return {
-        ...state,
-        authenticated: false
-      };
+      return initialState;
     case SET_USER:
       return {
         ...state,
@@ -36,8 +29,8 @@ export default (state = initialState, action) => {
         credentials: action.payload.credentials,
         likes: action.payload.likes,
         notifications: action.payload.notifications
-      }
+      };
     default:
       return state;
   }
-}
+};
