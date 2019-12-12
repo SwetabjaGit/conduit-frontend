@@ -5,10 +5,12 @@ import dayjs from 'dayjs';
 
 // MUI Stuffs 
 import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import MuiLink from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Icons
@@ -18,8 +20,7 @@ import CalendarToday from '@material-ui/icons/CalendarToday';
 
 // Redux
 import { connect } from 'react-redux';
-import { logoutUser } from '../redux/actions/userActions';
-
+import { logoutUser, uploadImage } from '../redux/actions/userActions';
 
 
 const styles = (theme) => ({
@@ -91,10 +92,22 @@ const Profile = (props) => {
     }
   } = props;
 
+  const handleImageChange = (event) => {
+    const image = event.target.files[0];
+    const formData = new FormData();
+    formData.append('image', image, image.name)
+    props.uploadImage(formData);
+  };
+
+  const handleEditPicture = () => {
+    const fileInput = document.getElementById('imageInput');
+    fileInput.click();
+  }
+
   const handleLogout = () => {
     props.logoutUser();
     window.location.href = '/login';
-  }
+  };
 
   let profileMarkup = !loading ? (authenticated ? (
 
@@ -103,6 +116,15 @@ const Profile = (props) => {
 
         <div className="image-wrapper">
           <img src={imageUrl} alt="profile" className="profile-image" />
+          <input 
+            type="file" 
+            id="imageInput"
+            hidden="hidden"
+            onChange={handleImageChange}
+          />
+          <IconButton onClick={handleEditPicture} className={classes.button}>
+            <EditIcon color="primary"></EditIcon>
+          </IconButton>
         </div>
         <hr />
 
@@ -169,13 +191,15 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-  logoutUser
+  logoutUser,
+  uploadImage
 };
 
 Profile.propTypes = {
   user: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
-  logoutUser: PropTypes.func.isRequired
+  logoutUser: PropTypes.func.isRequired,
+  uploadImage: PropTypes.func.isRequired
 };
 
 export default connect(
