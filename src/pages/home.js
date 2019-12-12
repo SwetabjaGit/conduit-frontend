@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Redux Stuff
 import { connect } from 'react-redux';
 import { fetchScreams } from '../redux/actions/dataActions';
-import { logoutUser } from '../redux/actions/userActions';
 
 // Components
 import Scream from '../components/Scream';
+import Profile from '../components/Profile';
+
 
 const styles = (theme) => ({
   progress: {
@@ -31,16 +31,7 @@ class Home extends Component {
 
   render() {
 
-    const { classes, authenticated, screams, loading } = this.props;
-
-    const deauthenticateUser = () => {
-      if (authenticated === true) {
-        this.props.logoutUser();
-        window.location.href = '/login';
-      } else {
-        console.log('User not authenticated');
-      }
-    };
+    const { classes, screams, loading } = this.props;
 
     const fetchedScreams = screams ? (
       screams.map(scream => <Scream key={scream.screamId} scream={scream} />)
@@ -53,9 +44,7 @@ class Home extends Component {
           {loading ? <CircularProgress className={classes.progress} color="secondary" /> : <span></span>}
         </Grid>
         <Grid item sm={4} xs={12}>
-          <Button variant="contained" color="secondary" onClick={deauthenticateUser} >
-            Logout
-          </Button>
+          <Profile />
         </Grid>
       </Grid>
     );
@@ -66,7 +55,6 @@ class Home extends Component {
 Home.propTypes = {
   classes: PropTypes.object.isRequired,
   fetchScreams: PropTypes.func.isRequired,
-  logoutUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
@@ -77,7 +65,6 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
   fetchScreams,
-  logoutUser
 };
 
 export default connect(
