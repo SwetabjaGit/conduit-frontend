@@ -55,6 +55,7 @@ class Home extends Component {
 Home.propTypes = {
   classes: PropTypes.object.isRequired,
   fetchScreams: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => ({

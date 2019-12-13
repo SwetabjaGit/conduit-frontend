@@ -1,7 +1,9 @@
 import {
   SET_SCREAMS,
   LOADING_SCREAMS,
-  STOP_LOADING_SCREAMS
+  STOP_LOADING_SCREAMS,
+  LIKE_SCREAM,
+  UNLIKE_SCREAM
 } from '../types';
 
 const initialState = {
@@ -25,6 +27,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: false
+      };
+    case LIKE_SCREAM:
+    case UNLIKE_SCREAM:
+      let index = state.screams.findIndex(
+        (scream) => action.payload.screamId === scream.screamId
+      );
+      state.screams[index] = action.payload;
+      return {
+        ...state
       };
     default:
       return state;

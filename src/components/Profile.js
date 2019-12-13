@@ -95,7 +95,7 @@ const Profile = (props) => {
   const {
     classes, 
     user: {
-      credentials: { handle, createdAt, imageUrl, bio, website, location, email, userId },
+      credentials: { handle, createdAt, imageUrl, bio, website, location },
       loading,
       authenticated
     }
