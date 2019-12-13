@@ -125,7 +125,7 @@ const Profile = (props) => {
 
         <div className="image-wrapper">
           <img src={imageUrl} alt="profile" className="profile-image" />
-          <input 
+          <input
             type="file" 
             id="imageInput"
             hidden="hidden"
