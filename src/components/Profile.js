@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
+import EditDetails from './EditDetails';
 
 // MUI Stuffs 
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -9,14 +10,15 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import MuiLink from '@material-ui/core/Link';
-import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Icons
 import LocationOn from '@material-ui/icons/LocationOn';
 import LinkIcon from '@material-ui/icons/Link';
 import CalendarToday from '@material-ui/icons/CalendarToday';
+import EditIcon from '@material-ui/icons/Edit';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import NavbarButton from '../util/NavbarButton';
 
 // Redux
 import { connect } from 'react-redux';
@@ -69,14 +71,21 @@ const styles = (theme) => ({
       margin: '20px 10px'
     }
   },
-  logoutButton: {
-    margin: 12
-  },
   progress: {
     minWidth: 100,
     minHeight: 100,
     marginLeft: 150,
     marginTop: 150
+  },
+  editBox: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  logoutButton: {
+    margin: 5,
+  },
+  flexGrow: {
+    flexGrow: 1,
   }
 });
 
@@ -122,9 +131,13 @@ const Profile = (props) => {
             hidden="hidden"
             onChange={handleImageChange}
           />
-          <IconButton onClick={handleEditPicture} className={classes.button}>
-            <EditIcon color="primary"></EditIcon>
-          </IconButton>
+          <NavbarButton
+            tip="Change Image"
+            onClick={handleEditPicture}
+            btnClassName={classes.button}
+          >
+            <EditIcon color="primary" />
+          </NavbarButton>
         </div>
         <hr />
 
@@ -154,16 +167,18 @@ const Profile = (props) => {
           <CalendarToday color="primary" />{' '}
           <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
           <hr />
-          <Button 
-            variant="contained" 
-            color="secondary" 
-            onClick={handleLogout} 
-            className={classes.logoutButton}
-          >
-            Logout
-          </Button>
+          <div className={classes.editBox}>
+            <NavbarButton
+              tip="Logout"
+              onClick={handleLogout}
+              btnClassName={classes.logoutButton}
+            >
+              <PowerSettingsNewIcon color="secondary" fontSize="large" />
+            </NavbarButton>
+            <div className={classes.flexGrow} />
+            <EditDetails />
+          </div>
         </div>
-        
       </div>
     </Paper>
 
