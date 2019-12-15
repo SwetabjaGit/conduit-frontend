@@ -4,6 +4,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import NavbarButton from '../util/NavbarButton';
+import DeleteScream from './DeleteScream';
 
 //MUI Stuff
 import { withStyles } from '@material-ui/core';
@@ -64,10 +65,11 @@ class Scream extends Component {
     const {
       classes, 
       scream: {
-        body, createdAt, userImage, userHandle, likeCount
+        body, createdAt, userImage, userHandle, screamId, likeCount
       },
       user: {
-        authenticated
+        authenticated,
+        credentials: { handle }
       }
     } = this.props;
   
@@ -91,6 +93,9 @@ class Scream extends Component {
       )
     );
 
+    const deleteButton = authenticated && userHandle === handle ? (
+      <DeleteScream screamId={screamId} />
+    ) : null;
     return (
       <div>
         <Card className={classes.card}>
@@ -108,6 +113,7 @@ class Scream extends Component {
             >
               {userHandle}
             </Typography>
+            {deleteButton}
             <Typography variant="body2" color="textSecondary">
               {dayjs(createdAt).fromNow()}
             </Typography>

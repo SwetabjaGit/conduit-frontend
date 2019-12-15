@@ -3,7 +3,8 @@ import {
   LOADING_SCREAMS,
   STOP_LOADING_SCREAMS,
   LIKE_SCREAM,
-  UNLIKE_SCREAM
+  UNLIKE_SCREAM,
+  DELETE_SCREAM
 } from '../types';
 
 const initialState = {
@@ -36,6 +37,13 @@ export default (state = initialState, action) => {
       state.screams[index] = action.payload;
       return {
         ...state
+      };
+    case DELETE_SCREAM:
+      return {
+        ...state,
+        screams: state.screams.filter(
+          (scream) => scream.screamId !== action.payload 
+        )
       };
     default:
       return state;
