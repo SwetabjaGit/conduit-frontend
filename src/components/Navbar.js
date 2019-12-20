@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 
 // MUI stuff
@@ -10,21 +11,25 @@ import Button from '@material-ui/core/Button';
 
 // Icons
 import HomeIcon from '@material-ui/icons/Home';
-import AddIcon from '@material-ui/icons/Add';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import NavbarButton from '../util/NavbarButton';
+import PostScream from './PostScream';
 
-export class Navbar extends Component {
+const styles = (theme) => ({
+  navBar: {
+    display: 'flex'
+  }
+});
+
+class Navbar extends Component {
   render() {
-    const { authenticated } = this.props;
+    const { classes, authenticated } = this.props;
     return (
       <AppBar>
         <Toolbar className="nav-container">
           {authenticated ? (
-            <div>
-              <NavbarButton tip="Post a scream">
-                <AddIcon color="primary" />
-              </NavbarButton>
+            <div className={classes.navBar}>
+              <PostScream />
               <Link to="/">
                 <NavbarButton tip="Home">
                   <HomeIcon />
@@ -54,11 +59,12 @@ export class Navbar extends Component {
 }
 
 Navbar.propTypes = {
+  classes: PropTypes.object.isRequired,
   authenticated: PropTypes.bool.isRequired
-}
+};
 
 const mapStateToProps = (state) => ({
   authenticated: state.user.authenticated
 });
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps)(withStyles(styles)(Navbar));

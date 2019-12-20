@@ -2,6 +2,8 @@ import {
   SET_SCREAMS,
   LOADING_SCREAMS,
   STOP_LOADING_SCREAMS,
+  SET_SCREAM,
+  POST_SCREAM,
   LIKE_SCREAM,
   UNLIKE_SCREAM,
   DELETE_SCREAM
@@ -9,6 +11,7 @@ import {
 
 const initialState = {
   screams: null,
+  scream: {},
   loading: false
 };
 
@@ -28,6 +31,19 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: false
+      };
+    case SET_SCREAM:
+      return {
+        ...state,
+        scream: action.payload
+      };
+    case POST_SCREAM:
+      return {
+        ...state,
+        screams: [
+          ...state.screams,
+          action.payload
+        ]
       };
     case LIKE_SCREAM:
     case UNLIKE_SCREAM:

@@ -24,6 +24,7 @@ const styles = (theme) => ({
     margin: 5
   },
   textField: {
+    margin: '10px auto 10px auto'
   }
 });
 
