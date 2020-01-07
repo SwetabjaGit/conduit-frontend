@@ -72,10 +72,9 @@ const styles = (theme) => ({
     }
   },
   progress: {
-    minWidth: 100,
-    minHeight: 100,
-    marginLeft: 150,
-    marginTop: 150
+    position: 'relative',
+    top: '100%',
+    left: '30%'
   },
   editBox: {
     display: 'flex',
@@ -196,7 +195,7 @@ const Profile = (props) => {
         </Button>
       </div>
     </Paper>
-  )) : (<CircularProgress className={classes.progress} color="secondary" />);
+  )) : (<CircularProgress className={classes.progress} size={150} thickness={2} color="secondary" />);
 
   return profileMarkup;
 };

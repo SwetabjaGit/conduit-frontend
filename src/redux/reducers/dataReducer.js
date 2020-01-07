@@ -6,7 +6,8 @@ import {
   POST_SCREAM,
   LIKE_SCREAM,
   UNLIKE_SCREAM,
-  DELETE_SCREAM
+  DELETE_SCREAM,
+  CLEAR_SCREAM
 } from '../types';
 
 const initialState = {
@@ -37,6 +38,12 @@ export default (state = initialState, action) => {
         ...state,
         scream: action.payload
       };
+    case CLEAR_SCREAM:
+      const obj = {};
+      return {
+        ...state,
+        scream: obj
+      };
     case POST_SCREAM:
       return {
         ...state,
@@ -51,6 +58,9 @@ export default (state = initialState, action) => {
         (scream) => action.payload.screamId === scream.screamId
       );
       state.screams[index] = action.payload;
+      if (state.scream.screamId === action.payload.screamId) {
+        state.scream = action.payload;
+      }
       return {
         ...state
       };

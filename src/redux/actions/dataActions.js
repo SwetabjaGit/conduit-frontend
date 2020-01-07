@@ -5,6 +5,7 @@ import {
   CLEAR_ERRORS,
   SET_ERRORS,
   SET_SCREAM,
+  CLEAR_SCREAM,
   LIKE_SCREAM,
   UNLIKE_SCREAM,
   DELETE_SCREAM,
@@ -55,6 +56,10 @@ export const getScream = (screamId) => (dispatch) => {
       dispatch(setErrors(err));
     });
 };
+
+export const clearScream = () => (dispatch) => {
+  dispatch({ type: CLEAR_SCREAM });
+}
 
 // Post a scream
 export const postScream = (newScream) => (dispatch) => {

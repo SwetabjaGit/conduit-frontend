@@ -15,10 +15,9 @@ import Profile from '../components/Profile';
 
 const styles = (theme) => ({
   progress: {
-    minWidth: 200,
-    minHeight: 200,
-    marginLeft: 400,
-    marginTop: 300
+    position: 'absolute',
+    top: '40%',
+    left: '30%'
   }
 });
 
@@ -31,17 +30,17 @@ class Home extends Component {
 
   render() {
 
-    const { classes, screams, loading } = this.props;
+    const { classes, screams } = this.props;
 
     const fetchedScreams = screams ? (
       screams.map(scream => <Scream key={scream.screamId} scream={scream} />)
-    ) : <CircularProgress className={classes.progress} color="secondary" />;
+    ) : <CircularProgress className={classes.progress} size={300} thickness={2} color="secondary" />;
 
     return (
       <Grid container spacing={4}>
         <Grid item sm={8} xs={12}>
           {fetchedScreams}
-          {loading ? <CircularProgress className={classes.progress} color="secondary" /> : <span></span>}
+          {/* {loading ? <CircularProgress size={200} thickness={2} color="secondary" /> : <span></span>} */}
         </Grid>
         <Grid item sm={4} xs={12}>
           <Profile />

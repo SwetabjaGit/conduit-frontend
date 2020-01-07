@@ -5,13 +5,15 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import NavbarButton from '../util/NavbarButton';
 import DeleteScream from './DeleteScream';
+import ScreamDialog from './ScreamDialog';
+import LikeButton from './LikeButton'
 
 //MUI Stuff
 import { withStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 
 // Icons
 import ChatIcon from '@material-ui/icons/Chat';
@@ -36,6 +38,10 @@ const styles = (theme) => ({
   content: {
     padding: 25,
     objectFit: 'cover'
+  },
+  actionArea: {
+    maxWidth: 200,
+    maxHeight: 200
   }
 });
 
@@ -76,11 +82,11 @@ class Scream extends Component {
     dayjs.extend(relativeTime);
 
     const likeButton = !authenticated ? (
-      <NavbarButton tip="Like" >
-        <Link to="/login">
+      <Link to="/login">
+        <NavbarButton tip="Like" >
           <FavoriteBorder color="primary" />
-        </Link>
-      </NavbarButton>
+        </NavbarButton>
+      </Link>
     ) : (
       this.alreadyLikedScream() ? (
         <NavbarButton tip="Unlike" onClick={this.unlikeScream} >
@@ -98,35 +104,34 @@ class Scream extends Component {
     ) : null;
     return (
       <div>
-        <Card className={classes.card}>
-          <CardMedia
-            className={classes.image}
-            image={userImage}
-            title="Profile image"
-          />
-          <CardContent className={classes.content}>
-            <Typography 
-              variant="h5"
-              component={Link}
-              to={`/users/${userHandle}`}
-              color="primary"
-            >
-              {userHandle}
-            </Typography>
-            {deleteButton}
-            <Typography variant="body2" color="textSecondary">
-              {dayjs(createdAt).fromNow()}
-            </Typography>
-            <Typography variant="body1">
-              {body}
-            </Typography>
-            {likeButton}
-            <span>{likeCount} Likes</span>
-            <NavbarButton tip="Comments">
-              <ChatIcon color="primary" />
-            </NavbarButton>
-          </CardContent>
-        </Card>
+          <Card className={classes.card}>
+            <CardActionArea className={classes.actionArea}>
+              <ScreamDialog screamId={screamId} userImage={userImage} userHandle={userHandle} />
+            </CardActionArea>
+            <CardContent className={classes.content}>
+              <Typography 
+                variant="h5"
+                component={Link}
+                to={`/users/${userHandle}`}
+                color="primary"
+              >
+                {userHandle}
+              </Typography>
+              {deleteButton}
+              <Typography variant="body2" color="textSecondary">
+                {dayjs(createdAt).fromNow()}
+              </Typography>
+              <Typography variant="body1">
+                {body}
+              </Typography>
+              {/*  { likeButton } */}
+              <LikeButton screamId={this.props.scream.screamId} />
+              <span>{likeCount} Likes</span>
+              <NavbarButton tip="Comments">
+                <ChatIcon color="primary" />
+              </NavbarButton>
+            </CardContent>
+          </Card>
       </div>
     );
   }
