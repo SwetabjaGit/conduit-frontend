@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import LikeButton from './LikeButton';
 import Comments from './Comments';
-/* import CommentForm from './CommentForm'; */
+import CommentForm from './CommentForm';
 
 // MUI Stuff
 import Dialog from '@material-ui/core/Dialog';
@@ -29,7 +29,7 @@ import { getScream, clearErrors, clearScream } from '../redux/actions/dataAction
 const styles = (theme) => ({
   profileImage: {
     maxWidth: 200,
-    height: 200,
+    maxHeight: 200,
     borderRadius: '50%',
     objectFit: 'cover'
   },
@@ -130,6 +130,7 @@ const ScreamDialog = (props) => {
         <span>{commentCount} comments</span>
       </Grid>
       <hr className={classes.visibleSeparator} />
+      <CommentForm screamId={props.screamId} />
       <Comments comments={comments} />
     </Grid>
   );
