@@ -104,34 +104,34 @@ class Scream extends Component {
     ) : null;
     return (
       <div>
-          <Card className={classes.card}>
-            <CardActionArea className={classes.actionArea}>
-              <ScreamDialog screamId={screamId} userImage={userImage} userHandle={userHandle} />
-            </CardActionArea>
-            <CardContent className={classes.content}>
-              <Typography 
-                variant="h5"
-                component={Link}
-                to={`/users/${userHandle}`}
-                color="primary"
-              >
-                {userHandle}
-              </Typography>
-              {deleteButton}
-              <Typography variant="body2" color="textSecondary">
-                {dayjs(createdAt).fromNow()}
-              </Typography>
-              <Typography variant="body1">
-                {body}
-              </Typography>
-              {/*  { likeButton } */}
-              <LikeButton screamId={this.props.scream.screamId} />
-              <span>{likeCount} Likes</span>
-              <NavbarButton tip="Comments">
-                <ChatIcon color="primary" />
-              </NavbarButton>
-            </CardContent>
-          </Card>
+        <Card className={classes.card}>
+          <CardActionArea className={classes.actionArea}>
+            <ScreamDialog screamId={screamId} userImage={userImage} userHandle={userHandle} />
+          </CardActionArea>
+          <CardContent className={classes.content}>
+            <Typography 
+              variant="h5"
+              component={Link}
+              to={`/users/${userHandle}`}
+              color="primary"
+            >
+              {userHandle}
+            </Typography>
+            {deleteButton}
+            <Typography variant="body2" color="textSecondary">
+              {dayjs(createdAt).fromNow()}
+            </Typography>
+            <Typography variant="body1">
+              {body}
+            </Typography>
+            {/*  { likeButton } */}
+            <LikeButton screamId={this.props.scream.screamId} />
+            <span>{likeCount} Likes</span>
+            <NavbarButton tip="Comments">
+              <ChatIcon color="primary" />
+            </NavbarButton>
+          </CardContent>
+        </Card>
       </div>
     );
   }
