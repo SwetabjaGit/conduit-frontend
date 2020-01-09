@@ -12,12 +12,10 @@ import { connect } from 'react-redux';
 import { getUserData } from '../redux/actions/dataActions';
 
 const User = (props) => {
-
-  const { match } = props;
+  const { match, getUserData } = props;
   const { screams, loading } = props.data;
   const [profile, setProfile] = useState(null);
   const [screamIdParam, setScreamIdParam] = useState(null);
-
 
   useEffect(() => {
     const handle = match.params.handle;
@@ -25,9 +23,9 @@ const User = (props) => {
     console.log(handle);
     console.log(screamId);
 
-    if (screamId) setScreamIdParam(screamIdParam);
+    if (screamId) setScreamIdParam(screamId);
 
-    props.getUserData(handle);
+    getUserData(handle);
     axios.get(`/user/${handle}`)
       .then((res) => {
         setProfile(res.data.user);
@@ -35,7 +33,7 @@ const User = (props) => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [match, getUserData]);
 
   const screamsMarkup = loading ? (
     <p>Scream Skeleton</p>

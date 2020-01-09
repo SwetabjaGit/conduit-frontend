@@ -34,7 +34,7 @@ const CommentForm = (props) => {
 
   const { authenticated, classes, screamId } = props;
 
-  const [body, setBody] = useState({});
+  const [body, setBody] = useState({ body: '' });
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const CommentForm = (props) => {
           value={body.body}
           label="Comment on scream"
           error={errors.comment ? true : false}
-          helperText={errors.comment}ß
+          helperText={errors.comment}
           onChange={handleChange}
           fullWidth
         />

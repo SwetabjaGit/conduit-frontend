@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import NavbarButton from '../util/NavbarButton';
@@ -78,23 +78,48 @@ const ScreamDialog = (props) => {
       userImage,
       comments
     },
-    UI : { loading }
+    UI : { loading },
+    getScream
   } = props;
 
   const [open, setOpen] = useState(false);
   const [oldPath, setOldPath] = useState('');
-  const [newPath, setNewPath] = useState('');
-
+  //const [newPath, setNewPath] = useState('');
 
   const handleOpen = () => {
+    let oldPath = window.location.pathname;
+    const { userHandle, screamId } = props;
+    const newPath = `/users/${userHandle}/scream/${screamId}`;
+    if(oldPath === newPath) oldPath = `/users/${userHandle}`;
+    window.history.pushState(null, null, newPath);
+    setOldPath(oldPath);
     setOpen(true);
-    props.getScream(props.screamId);
+    props.getScream(screamId);
   };
 
   const handleClose = () => {
+    window.history.pushState(null, null, oldPath)
     setOpen(false);
     props.clearScream();
   };
+
+  useEffect(() => {
+    const handleOpen = () => {
+      let oldPath = window.location.pathname;
+      const newPath = `/users/${props.userHandle}/scream/${props.screamId}`;
+      window.history.pushState(null, null, newPath);
+  
+      setOldPath(oldPath);
+      setOpen(true);
+      getScream(props.screamId);
+    };
+
+    if (props.openDialog) {
+      console.log('OpenDialog is true.');
+      handleOpen();
+    }
+  }, [props.userHandle, props.screamId, props.openDialog, getScream]);
+  
 
   const dialogMarkup = loading ? (
     <div className={classes.spinnerDiv}>

@@ -17,8 +17,8 @@ import CardContent from '@material-ui/core/CardContent';
 
 // Icons
 import ChatIcon from '@material-ui/icons/Chat';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+/* import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder'; */
 
 // Redux
 import { connect } from 'react-redux';
@@ -81,7 +81,7 @@ class Scream extends Component {
   
     dayjs.extend(relativeTime);
 
-    const likeButton = !authenticated ? (
+    /* const likeButton = !authenticated ? (
       <Link to="/login">
         <NavbarButton tip="Like" >
           <FavoriteBorder color="primary" />
@@ -97,7 +97,7 @@ class Scream extends Component {
           <FavoriteBorder color="primary" />
         </NavbarButton>
       )
-    );
+    ); */
 
     const deleteButton = authenticated && userHandle === handle ? (
       <DeleteScream screamId={screamId} />
@@ -106,7 +106,12 @@ class Scream extends Component {
       <div>
         <Card className={classes.card}>
           <CardActionArea className={classes.actionArea}>
-            <ScreamDialog screamId={screamId} userImage={userImage} userHandle={userHandle} />
+            <ScreamDialog 
+              screamId={screamId}
+              userImage={userImage}
+              userHandle={userHandle}
+              openDialog={this.props.openDialog} 
+            />
           </CardActionArea>
           <CardContent className={classes.content}>
             <Typography 
@@ -142,7 +147,8 @@ Scream.propTypes = {
   user: PropTypes.object.isRequired,
   likeScream: PropTypes.func.isRequired,
   unlikeScream: PropTypes.func.isRequired,
-  scream: PropTypes.object.isRequired
+  scream: PropTypes.object.isRequired,
+  openDialog: PropTypes.bool
 };
 
 const mapStateToProps = (state) => ({
