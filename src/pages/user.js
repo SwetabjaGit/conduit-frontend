@@ -66,7 +66,7 @@ const User = (props) => {
     </Grid>
   );
 
-}
+};
 
 User.propTypes = {
   getUserData: PropTypes.func.isRequired,
