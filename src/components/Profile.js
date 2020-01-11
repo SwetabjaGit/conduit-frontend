@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import MuiLink from '@material-ui/core/Link';
-import CircularProgress from '@material-ui/core/CircularProgress';
+//import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Icons
 import LocationOn from '@material-ui/icons/LocationOn';
@@ -23,6 +23,7 @@ import NavbarButton from '../util/NavbarButton';
 // Redux
 import { connect } from 'react-redux';
 import { logoutUser, uploadImage } from '../redux/actions/userActions';
+import ProfileSkeleton from '../util/ProfileSkeleton';
 
 
 const styles = (theme) => ({
@@ -195,7 +196,10 @@ const Profile = (props) => {
         </Button>
       </div>
     </Paper>
-  )) : (<CircularProgress className={classes.progress} size={150} thickness={2} color="secondary" />);
+  )) : (
+    <ProfileSkeleton />
+    //<CircularProgress className={classes.progress} size={150} thickness={2} color="secondary" />
+  );
 
   return profileMarkup;
 };

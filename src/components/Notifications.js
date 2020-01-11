@@ -47,7 +47,7 @@ const Notifications = (props) => {
       .map((not) => not.notificationId);
     props.markNotificationsRead(unreadNotificationsIds);
     setAnchorEl(null);
-  }
+  };
 
   let notificationsIcon;
   if (notifications && notifications.length > 0) {

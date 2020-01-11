@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
-import CircularProgress from '@material-ui/core/CircularProgress';
+//import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Redux Stuff
 import { connect } from 'react-redux';
@@ -11,6 +11,7 @@ import { fetchScreams } from '../redux/actions/dataActions';
 // Components
 import Scream from '../components/Scream';
 import Profile from '../components/Profile';
+import ScreamSkeleton from '../util/ScreamSkeleton';
 
 
 const styles = (theme) => ({
@@ -22,34 +23,33 @@ const styles = (theme) => ({
 });
 
 
-class Home extends Component {
+const Home = (props) => {
 
-  componentDidMount(){
-    this.props.fetchScreams();
-  }
+  const { screams, fetchScreams } = props;
 
-  render() {
+  useEffect(() => {
+    fetchScreams();
+  }, [fetchScreams]);
 
-    const { classes, screams } = this.props;
+  const fetchedScreams = screams ? (
+    screams.map(scream => <Scream key={scream.screamId} scream={scream} />)
+  ) : (
+    <ScreamSkeleton />
+  );
 
-    const fetchedScreams = screams ? (
-      screams.map(scream => <Scream key={scream.screamId} scream={scream} />)
-    ) : <CircularProgress className={classes.progress} size={300} thickness={2} color="secondary" />;
-
-    return (
-      <Grid container spacing={4}>
-        <Grid item sm={8} xs={12}>
-          {fetchedScreams}
-          {/* {loading ? <CircularProgress size={200} thickness={2} color="secondary" /> : <span></span>} */}
-        </Grid>
-        <Grid item sm={4} xs={12}>
-          <Profile />
-        </Grid>
+  return (
+    <Grid container spacing={4}>
+      <Grid item sm={8} xs={12}>
+        {fetchedScreams}
       </Grid>
-    );
+      <Grid item sm={4} xs={12}>
+        <Profile />
+      </Grid>
+    </Grid>
+  );
 
-  }
-}
+};
+
 
 Home.propTypes = {
   classes: PropTypes.object.isRequired,
