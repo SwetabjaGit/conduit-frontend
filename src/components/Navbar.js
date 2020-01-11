@@ -11,9 +11,11 @@ import Button from '@material-ui/core/Button';
 
 // Icons
 import HomeIcon from '@material-ui/icons/Home';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import NavbarButton from '../util/NavbarButton';
 import PostScream from './PostScream';
+//import NotificationsIcon from '@material-ui/icons/Notifications';
+import Notifications from './Notifications';
+
 
 const styles = (theme) => ({
   navBar: {
@@ -35,9 +37,7 @@ class Navbar extends Component {
                   <HomeIcon />
                 </NavbarButton>
               </Link>
-              <NavbarButton tip="Notifications">
-                <NotificationsIcon color="primary" />
-              </NavbarButton>
+              <Notifications />
             </div>
           ) : (
             <div>
