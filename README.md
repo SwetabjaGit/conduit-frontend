@@ -1,6 +1,6 @@
 ## Web Server
 
-https://gamer-rank.com/
+https://socialape-frontend.now.sh
 
 ### `npm start`
 
