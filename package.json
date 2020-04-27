@@ -38,5 +38,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://us-central1-socialape-d8699.cloudfunctions.net/api"
+  "proxy": "https://asia-east2-socialape-d8699.cloudfunctions.net/api"
 }

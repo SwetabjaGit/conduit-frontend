@@ -98,7 +98,7 @@ const ScreamDialog = (props) => {
   };
 
   const handleClose = () => {
-    window.history.pushState(null, null, oldPath)
+    window.history.pushState(null, null, oldPath);
     setOpen(false);
     props.clearScream();
   };

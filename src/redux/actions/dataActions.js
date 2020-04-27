@@ -61,7 +61,7 @@ export const getScream = (screamId) => (dispatch) => {
 
 export const clearScream = () => (dispatch) => {
   dispatch({ type: CLEAR_SCREAM });
-}
+};
 
 // Post a scream
 export const postScream = (newScream) => (dispatch) => {

@@ -110,7 +110,7 @@ class Scream extends Component {
               screamId={screamId}
               userImage={userImage}
               userHandle={userHandle}
-              openDialog={this.props.openDialog} 
+              openDialog={this.props.openDialog}
             />
           </CardActionArea>
           <CardContent className={classes.content}>

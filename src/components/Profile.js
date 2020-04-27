@@ -104,7 +104,7 @@ const Profile = (props) => {
   const handleImageChange = (event) => {
     const image = event.target.files[0];
     const formData = new FormData();
-    formData.append('image', image, image.name)
+    formData.append('image', image, image.name);
     props.uploadImage(formData);
   };
 
