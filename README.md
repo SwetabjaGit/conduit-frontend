@@ -7,7 +7,7 @@ https://socialape-frontend.netlify.app
 ## Zeit Server
 https://socialape-frontend.now.sh
 
-#Features:
+# Features:
 1. Signup and Login for user
 2. Creating, modifying and deleting posts
 3. Commenting on posts
