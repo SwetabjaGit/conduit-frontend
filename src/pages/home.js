@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 //import CircularProgress from '@material-ui/core/CircularProgress';
 
-// Redux Stuff
-import { connect } from 'react-redux';
-import { fetchScreams } from '../redux/actions/dataActions';
-
 // Components
 import Scream from '../components/Scream';
 import Profile from '../components/Profile';
 import ScreamSkeleton from '../util/ScreamSkeleton';
+
+// Redux Stuff
+import { connect } from 'react-redux';
+import { fetchScreams } from '../redux/actions/dataActions';
 
 
 const styles = (theme) => ({

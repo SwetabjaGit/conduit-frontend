@@ -22,10 +22,9 @@ import login from './pages/login';
 import user from './pages/user';
 
 
-const theme = createMuiTheme(themeFile);
-
 axios.defaults.baseURL = 'https://asia-east2-socialape-d8699.cloudfunctions.net/api';
 
+const theme = createMuiTheme(themeFile);
 
 const token = localStorage.FBIdToken;
 if (token) {
