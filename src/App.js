@@ -20,9 +20,10 @@ import home from './pages/home';
 import signup from './pages/signup';
 import login from './pages/login';
 import user from './pages/user';
+import { apiBaseUrl } from './config/constants'
 
 
-axios.defaults.baseURL = 'https://asia-east2-socialape-d8699.cloudfunctions.net/api';
+axios.defaults.baseURL = apiBaseUrl;
 
 const theme = createMuiTheme(themeFile);
 
