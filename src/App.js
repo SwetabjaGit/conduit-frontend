@@ -20,10 +20,10 @@ import home from './pages/home';
 import signup from './pages/signup';
 import login from './pages/login';
 import user from './pages/user';
-import { apiBaseUrl } from './config/constants'
+import { API_BASE_URL } from './config/constants'
 
 
-axios.defaults.baseURL = apiBaseUrl;
+axios.defaults.baseURL = API_BASE_URL;
 
 const theme = createMuiTheme(themeFile);
 

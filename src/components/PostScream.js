@@ -66,7 +66,6 @@ const PostScream = (props) => {
 
   const handleChange = (event) => {
     setNewScream({ [event.target.name]: event.target.value });
-    console.log(newScream);
   };
 
   const handleSubmit = (event) => {

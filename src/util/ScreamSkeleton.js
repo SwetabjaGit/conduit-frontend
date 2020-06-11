@@ -51,7 +51,7 @@ const styles = (theme) => ({
 const ScreamSkeleton = (props) => {
   const { classes } = props;
 
-  const content = Array.from({ length: 20 }).map((item, index) => (
+  const content = Array.from({ length: 6 }).map((item, index) => (
     <Card className={classes.card} key={index}>
       <CardMedia className={classes.cover} image={NoImg} />
       <CardContent className={classes.cardContent}>
