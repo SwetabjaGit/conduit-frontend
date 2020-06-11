@@ -32,7 +32,7 @@ const Home = (props) => {
   }, [fetchScreams]);
 
   const fetchedScreams = screams ? (
-    screams.map(scream => <Scream key={scream.screamId} scream={scream} />)
+    screams.map(scream => <Scream key={scream.id} scream={scream} />)
   ) : (
     <ScreamSkeleton />
   );

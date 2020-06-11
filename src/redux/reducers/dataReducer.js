@@ -22,7 +22,7 @@ export default (state = initialState, action) => {
     case SET_SCREAMS:
       return {
         ...state,
-        screams: action.payload
+        screams: action.payload.collection
       };
     case LOADING_SCREAMS:
       return {

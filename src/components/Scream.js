@@ -51,7 +51,7 @@ class Scream extends Component {
     if(
       this.props.user.likes &&
       this.props.user.likes.find(
-        (like) => like.screamId === this.props.scream.screamId
+        (like) => like.screamId === this.props.scream.id
       )
     )
       return true;
@@ -59,11 +59,11 @@ class Scream extends Component {
   };
 
   likeScream = () => {
-    this.props.likeScream(this.props.scream.screamId);
+    this.props.likeScream(this.props.scream.id);
   };
 
   unlikeScream = () => {
-    this.props.unlikeScream(this.props.scream.screamId);
+    this.props.unlikeScream(this.props.scream.id);
   };
 
   render() {
@@ -71,13 +71,14 @@ class Scream extends Component {
     const {
       classes, 
       scream: {
-        body, createdAt, userImage, userHandle, screamId, likeCount
+        body, createdAt, userImage, userHandle, likeCount
       },
       user: {
         authenticated,
         credentials: { handle }
       }
     } = this.props;
+    let screamId = this.props.scream.id;
   
     dayjs.extend(relativeTime);
 
@@ -130,7 +131,7 @@ class Scream extends Component {
               {body}
             </Typography>
             {/*  { likeButton } */}
-            <LikeButton screamId={this.props.scream.screamId} />
+            <LikeButton screamId={this.props.scream.id} />
             <span>{likeCount} Likes</span>
             <NavbarButton tip="Comments">
               <ChatIcon color="primary" />

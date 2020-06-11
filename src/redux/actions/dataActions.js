@@ -165,7 +165,7 @@ export const clearErrors = () => (dispatch) => {
 export const setErrors = (error) => (dispatch) => {
   dispatch({
     type: SET_ERRORS,
-    payload: error.response.data
+    payload: error
   });
   dispatch({ type: STOP_LOADING_UI });
 };
