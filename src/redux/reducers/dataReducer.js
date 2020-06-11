@@ -12,17 +12,32 @@ import {
 } from '../types';
 
 const initialState = {
-  screams: null,
+  screams: [],
   scream: {},
-  loading: false
+  loading: false,
+  nextHref: null,
+  hasMoreItems: true,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_SCREAMS:
+      let screams = state.screams;
+      console.log(screams);
+      action.payload.collection.map(scream => {
+        return screams.push(scream);
+      });
+      let hasMoreItemss = true;
+      if(action.payload.next_href) {
+        hasMoreItemss = true;
+      } else {
+        hasMoreItemss = false;
+      }
       return {
         ...state,
-        screams: action.payload.collection
+        screams: screams,
+        nextHref: action.payload.next_href,
+        hasMoreItems: hasMoreItemss
       };
     case LOADING_SCREAMS:
       return {

@@ -18,13 +18,16 @@ import {
 import axios from 'axios';
 
 // Get all screams
-export const fetchScreams = () => (dispatch) => {
+export const fetchScreams = (screamsUrl) => (dispatch) => {
   dispatch({ type: LOADING_SCREAMS });
-  axios.get('/screams')
+  console.log(screamsUrl);
+  axios.get(screamsUrl)
     .then(res => {
-      console.log(res.data);
-      dispatch(setScreams(res.data));
-      dispatch(clearErrors());
+      if(res) {
+        console.log(res.data);
+        dispatch(setScreams(res.data));
+        dispatch(clearErrors());
+      }
       dispatch({ type: STOP_LOADING_SCREAMS });
     })
     .catch(err => {
