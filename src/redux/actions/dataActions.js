@@ -67,9 +67,14 @@ export const clearScream = () => (dispatch) => {
 };
 
 // Post a scream
-export const postScream = (newScream) => (dispatch) => {
+export const postScream = (formData) => (dispatch) => {
   dispatch({ type: LOADING_UI });
-  axios.post('/scream', newScream)
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  };
+  axios.post('/scream', formData, config)
     .then((res) => {
       dispatch({
         type: POST_SCREAM,

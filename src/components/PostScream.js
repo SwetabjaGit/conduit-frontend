@@ -12,6 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
+import EditIcon from '@material-ui/icons/Edit';
 
 // Redux
 import { connect } from 'react-redux';
@@ -39,7 +40,7 @@ const styles = (theme) => ({
 
 const PostScream = (props) => {
 
-  const { classes, UI: {loading} } = props;
+  const { classes, UI: {loading}, postScream } = props;
   const [newScream, setNewScream] = useState({});
   const [errors, setErrors] = useState({});
   const [open, setOpen] = useState(false);
@@ -48,10 +49,15 @@ const PostScream = (props) => {
     if (props.UI.errors) {
       setErrors(props.UI.errors);
     }
+
     if (!props.UI.errors && !props.UI.loading) {
       setOpen(false);
       setErrors({});
-      setNewScream({ body: '' });
+      setNewScream({ 
+        body: '',
+        tagList: 'pubg, esports, singapore',
+        image: null
+      });
     }
   }, [props.UI]);
 
@@ -65,13 +71,37 @@ const PostScream = (props) => {
   };
 
   const handleChange = (event) => {
-    setNewScream({ [event.target.name]: event.target.value });
+    setNewScream({
+      ...newScream,
+      [event.target.name]: event.target.value 
+    });
+  };
+
+
+  const handleImageChange = (event) => {
+    setNewScream({
+      ...newScream,
+      image: event.target.files[0]
+    });
+    console.log('Image: ', event.target.files[0]);
+  };
+
+  const handleEditPicture = () => {
+    const fileInput = document.getElementById('newScreamImage');
+    fileInput.click();
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.postScream(newScream);
+    console.log(newScream);
+    const formData = new FormData();
+    newScream.image && formData.append('imageUrl', newScream.image, newScream.image.name);
+    formData.append('body', newScream.body);
+    formData.append('tagList', newScream.tagList);
+    console.log('FormData: ', formData);
+    postScream(formData); 
   };
+
 
   return (
     <div>
@@ -106,6 +136,26 @@ const PostScream = (props) => {
               onChange={handleChange}
               fullWidth
             />
+            <div className="image-wrapper">
+              {/* <img 
+                src={newScream.image} 
+                alt="profile"
+                className="profile-image" 
+              /> */}
+              <input
+                type="file" 
+                id="newScreamImage"
+                hidden="hidden"
+                onChange={handleImageChange}
+              />
+              <NavbarButton
+                tip="Change Image"
+                onClick={handleEditPicture}
+                btnClassName={classes.button}
+              >
+                <EditIcon color="primary" />
+              </NavbarButton>
+            </div>
             <Button
               type="submit"
               variant="contained"

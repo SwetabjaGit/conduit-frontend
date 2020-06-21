@@ -111,7 +111,7 @@ const Profile = (props) => {
   const handleEditPicture = () => {
     const fileInput = document.getElementById('imageInput');
     fileInput.click();
-  }
+  };
 
   const handleLogout = () => {
     props.logoutUser();

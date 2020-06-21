@@ -23,7 +23,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case SET_SCREAMS:
       let screams = state.screams;
-      console.log(screams);
+      action.payload.collection && 
       action.payload.collection.map(scream => {
         return screams.push(scream);
       });

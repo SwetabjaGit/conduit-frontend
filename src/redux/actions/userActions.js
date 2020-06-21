@@ -14,7 +14,7 @@ import axios from 'axios';
 export const loginUser = (userData, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
   axios
-    .post('/login', userData)
+    .post('/auth/login', userData)
     .then(res => {
       console.log(res.data);  //Store the token in LocalStorage so that we can use it later
       setAuthorizationHeader(res.data.token);
@@ -33,7 +33,7 @@ export const loginUser = (userData, history) => (dispatch) => {
 
 export const signupUser = (newUserData, history) => (dispatch) => {
   dispatch({ type: LOADING_UI });
-  axios.post('/signup', newUserData)
+  axios.post('/auth/signup', newUserData)
     .then(res => {
       console.log(res.data);  //Store the token in browser localstorage so that we can use it later
       setAuthorizationHeader(res.data.token);
