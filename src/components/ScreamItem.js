@@ -139,10 +139,6 @@ const ScreamItem = props => {
     setLikes(likes => likes - 1);
     props.unlikeScream(screamId);
   };
-
-  const handleEditScream = () => {
-    handleMenuClose();
-  };
     
   window.onmousedown = (event) => {
     handleMenuClose();
