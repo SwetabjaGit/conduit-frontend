@@ -9,6 +9,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 // Redux Stuff
 import { connect } from 'react-redux';
@@ -41,15 +43,20 @@ const DeleteScream = (props) => {
     setOpen(false);
   };
 
+  const deleteButton = (
+    <NavbarButton
+      tip="Delete Scream"
+      onClick={handleOpen}
+      btnClassName={classes.deleteButton}
+    >
+      <DeleteOutline color="secondary" />
+    </NavbarButton>
+  );
+
   return (
     <div>
-      <NavbarButton
-        tip="Delete Scream"
-        onClick={handleOpen}
-        btnClassName={classes.deleteButton}
-      >
-        <DeleteOutline color="secondary" />
-      </NavbarButton>
+      {deleteButton}
+      <MenuItem onClick={handleOpen}>Delete</MenuItem>
       <Dialog
         open={open}
         onClose={handleClose}

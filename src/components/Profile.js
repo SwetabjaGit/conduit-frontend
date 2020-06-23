@@ -95,7 +95,15 @@ const Profile = (props) => {
   const {
     classes, 
     user: {
-      credentials: { handle, createdAt, imageUrl, bio, website, location },
+      credentials: { 
+        handle, 
+        fullName, 
+        createdAt, 
+        imageUrl, 
+        bio, 
+        website, 
+        location 
+      },
       loading,
       authenticated
     }
@@ -142,9 +150,15 @@ const Profile = (props) => {
         <hr />
 
         <div className="profile-details">
-          <MuiLink component={Link} to={`/users/${handle}`} color="primary" variant="h5">
+          <MuiLink 
+            component={Link} 
+            to={`/users/${handle}`} 
+            color="primary" 
+            variant="h5"
+          >
             @{handle}
           </MuiLink>
+          <Typography variant="h5">{fullName}</Typography>
           <hr />
           { bio && <Typography variant="body2">{bio}</Typography> }
           <hr />

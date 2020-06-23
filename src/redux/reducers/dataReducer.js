@@ -6,6 +6,7 @@ import {
   POST_SCREAM,
   LIKE_SCREAM,
   UNLIKE_SCREAM,
+  EDIT_SCREAM,
   DELETE_SCREAM,
   CLEAR_SCREAM,
   SUBMIT_COMMENT
@@ -91,6 +92,17 @@ export default (state = initialState, action) => {
           ]
         }
       }
+    case EDIT_SCREAM:
+      let updatedScreams = state.screams.map(
+        scream => scream.screamId === action.payload.screamId ? {
+          ...scream,
+          body: action.payload.text
+        } : scream
+      );
+      return {
+        ...state,
+        screams: updatedScreams
+      };
     case DELETE_SCREAM:
       return {
         ...state,

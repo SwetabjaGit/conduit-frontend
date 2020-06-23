@@ -8,6 +8,7 @@ import {
   CLEAR_SCREAM,
   LIKE_SCREAM,
   UNLIKE_SCREAM,
+  EDIT_SCREAM,
   DELETE_SCREAM,
   POST_SCREAM,
   LOADING_UI,
@@ -89,7 +90,7 @@ export const postScream = (formData) => (dispatch) => {
 
 // Like a scream
 export const likeScream = (screamId) => (dispatch) => {
-  axios.get(`/scream/${screamId}/like`)
+  axios.post(`/scream/${screamId}/like`)
     .then(res => {
       dispatch({ 
         type: LIKE_SCREAM,
@@ -103,7 +104,7 @@ export const likeScream = (screamId) => (dispatch) => {
 
 // Unlike a scream
 export const unlikeScream = (screamId) => (dispatch) => {
-  axios.get(`/scream/${screamId}/unlike`)
+  axios.delete(`/scream/${screamId}/unlike`)
     .then(res => {
       dispatch({
         type: UNLIKE_SCREAM,
@@ -148,6 +149,24 @@ export const getUserData = (userHandle) => (dispatch) => {
         type: SET_SCREAMS,
         payload: null
       });
+    });
+};
+
+export const editScream = (screamId, bodyText) => (dispatch) => {
+  let payload = {
+    screamId: screamId,
+    text: bodyText
+  };
+  axios.put(`/scream/${screamId}`, payload)
+    .then((res) => {
+      console.log(res.data);
+      dispatch({
+        type: EDIT_SCREAM,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      console.log(err);
     });
 };
 

@@ -20,13 +20,11 @@ import { postScream, clearErrors } from '../redux/actions/dataActions';
 
 
 const styles = (theme) => ({
-  textField: {
-    margin: '10px auto 10px auto'
-  },
   submitButton: {
     position: 'relative',
     float: 'right',
-    marginTop: 10
+    marginTop: 10,
+    marginBottom: 20,
   },
   progressSpinner: {
     position: 'absolute'
@@ -35,6 +33,23 @@ const styles = (theme) => ({
     position: 'absolute',
     left: '91%',
     top: '6%'
+  },
+  submitForm: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  textField: {
+    margin: '10px auto 10px auto'
+  },
+  editIcon: {
+    width: 60,
+  },
+  imageWrapper: {
+    position: 'relative',
+  },
+  screamImage: {
+    maxWidth: 'auto',
+    maxHeight: 300
   }
 });
 
@@ -56,7 +71,8 @@ const PostScream = (props) => {
       setNewScream({ 
         body: '',
         tagList: 'pubg, esports, singapore',
-        image: null
+        image: null,
+        previewImage: null
       });
     }
   }, [props.UI]);
@@ -81,7 +97,8 @@ const PostScream = (props) => {
   const handleImageChange = (event) => {
     setNewScream({
       ...newScream,
-      image: event.target.files[0]
+      image: event.target.files[0],
+      previewImage: URL.createObjectURL(event.target.files[0])
     });
     console.log('Image: ', event.target.files[0]);
   };
@@ -124,37 +141,39 @@ const PostScream = (props) => {
         <DialogTitle>Post a new scream</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
-            <TextField
-              name="body"
-              type="text"
-              label="SCREAM!!"
-              multiline
-              placeholder="Scream at your fellow apes"
-              error={errors.body ? true : false}
-              helperText={errors.body}
-              className={classes.textField}
-              onChange={handleChange}
-              fullWidth
-            />
-            <div className="image-wrapper">
-              {/* <img 
-                src={newScream.image} 
+            <div className={classes.submitForm}>
+              <TextField
+                name="body"
+                type="text"
+                label="SCREAM!!"
+                multiline
+                placeholder="Scream at your fellow apes"
+                error={errors.body ? true : false}
+                helperText={errors.body}
+                className={classes.textField}
+                onChange={handleChange}
+                fullWidth
+              />
+              <NavbarButton
+                tip="Change Image"
+                onClick={handleEditPicture}
+                btnClassName={classes.editIcon}
+              >
+                <EditIcon color="primary" />
+              </NavbarButton>
+            </div>
+            <div className={classes.imageWrapper}>
+              <img 
+                src={newScream.previewImage} 
                 alt="profile"
-                className="profile-image" 
-              /> */}
+                className={classes.screamImage} 
+              />
               <input
                 type="file" 
                 id="newScreamImage"
                 hidden="hidden"
                 onChange={handleImageChange}
               />
-              <NavbarButton
-                tip="Change Image"
-                onClick={handleEditPicture}
-                btnClassName={classes.button}
-              >
-                <EditIcon color="primary" />
-              </NavbarButton>
             </div>
             <Button
               type="submit"

@@ -5,7 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Components
-import Scream from '../components/Scream';
+//import Scream from '../components/Scream';
+import ScreamItem from '../components/ScreamItem';
 import Profile from '../components/Profile';
 import ScreamSkeleton from '../util/ScreamSkeleton';
 import {
@@ -28,6 +29,9 @@ const styles = (theme) => ({
     marginTop: 20,
     marginBottom: 30,
     zoom: 1.5
+  },
+  profile: {
+    position: 'fixed'
   }
 });
 
@@ -71,10 +75,13 @@ const Home = (props) => {
       pageStart={0}
       loadMore={fetchMoreData}
       hasMore={hasMoreItems}
-      loader={screams.length === 0 ? <ScreamSkeleton key={0} /> : loader}
+      loader={screams.length === 0 
+        ? <ScreamSkeleton key={0} /> 
+        : loader
+      }
     >
       {screams.map(scream => (
-        <Scream
+        <ScreamItem
           key={scream.id}
           scream={scream}
         />
@@ -88,7 +95,7 @@ const Home = (props) => {
         {fetchedScreams}
       </Grid>
       <Grid item sm={4} xs={12}>
-        <Profile />
+        <Profile className={classes.profile} />
       </Grid>
     </Grid>
   );

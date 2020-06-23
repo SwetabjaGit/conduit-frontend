@@ -3,10 +3,6 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import NavbarButton from '../util/NavbarButton';
-import DeleteScream from './DeleteScream';
-import ScreamDialog from './ScreamDialog';
-import LikeButton from './LikeButton'
 
 //MUI Stuff
 import { withStyles } from '@material-ui/core';
@@ -14,11 +10,13 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-
-// Icons
 import ChatIcon from '@material-ui/icons/Chat';
-/* import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder'; */
+
+// Components
+import NavbarButton from '../util/NavbarButton';
+import DeleteScream from './DeleteScream';
+import ScreamDialog from './ScreamDialog';
+import LikeButton from './LikeButton'
 
 // Redux
 import { connect } from 'react-redux';
@@ -71,38 +69,30 @@ class Scream extends Component {
     const {
       classes, 
       scream: {
-        body, createdAt, userImage, userHandle, likeCount
+        body,
+        userHandle,
+        userImage,
+        contentImage,
+        likeCount,
+        commentCount,
+        tagList,
+        createdAt,
       },
       user: {
         authenticated,
         credentials: { handle }
       }
     } = this.props;
+
     let screamId = this.props.scream.id;
   
     dayjs.extend(relativeTime);
 
-    /* const likeButton = !authenticated ? (
-      <Link to="/login">
-        <NavbarButton tip="Like" >
-          <FavoriteBorder color="primary" />
-        </NavbarButton>
-      </Link>
-    ) : (
-      this.alreadyLikedScream() ? (
-        <NavbarButton tip="Unlike" onClick={this.unlikeScream} >
-          <FavoriteIcon color="primary" />
-        </NavbarButton>
-      ) : (
-        <NavbarButton tip="Like" onClick={this.likeScream} >
-          <FavoriteBorder color="primary" />
-        </NavbarButton>
-      )
-    ); */
 
     const deleteButton = authenticated && userHandle === handle ? (
       <DeleteScream screamId={screamId} />
     ) : null;
+    
     return (
       <div>
         <Card className={classes.card}>

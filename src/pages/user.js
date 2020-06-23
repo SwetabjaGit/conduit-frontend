@@ -28,7 +28,7 @@ const User = (props) => {
     if (screamId) setScreamIdParam(screamId);
 
     getUserData(handle);
-    axios.get(`/user/${handle}`)
+    axios.get(`/user/${handle}/profile`)
       .then((res) => {
         setProfile(res.data.user);
       })
