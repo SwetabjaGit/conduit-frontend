@@ -2,6 +2,8 @@ import {
   SET_SCREAMS,
   LOADING_SCREAMS,
   STOP_LOADING_SCREAMS,
+  SET_PROFILE,
+  CLEAR_PROFILE,
   SET_SCREAM,
   POST_SCREAM,
   LIKE_SCREAM,
@@ -9,10 +11,16 @@ import {
   EDIT_SCREAM,
   DELETE_SCREAM,
   CLEAR_SCREAM,
+  SET_COMMENTS,
   SUBMIT_COMMENT
 } from '../types';
 
+
 const initialState = {
+  profile: {
+    user: {},
+    screams: []
+  },
   screams: [],
   scream: {},
   loading: false,
@@ -22,6 +30,19 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case SET_PROFILE:
+      return {
+        ...state,
+        profile: {
+          user: action.payload.user,
+          screams: action.payload.screams
+        }
+      };
+    case CLEAR_PROFILE:
+      return {
+        ...state,
+        profile: initialState.profile
+      }
     case SET_SCREAMS:
       let screams = state.screams;
       action.payload.collection && 
@@ -56,10 +77,9 @@ export default (state = initialState, action) => {
         scream: action.payload
       };
     case CLEAR_SCREAM:
-      const obj = {};
       return {
         ...state,
-        scream: obj
+        scream: {}
       };
     case POST_SCREAM:
       return {
@@ -81,20 +101,39 @@ export default (state = initialState, action) => {
       return {
         ...state
       };
+    case SET_COMMENTS:
+      return {
+        ...state,
+        screams: state.screams.map(
+          (scream) => scream.id === action.payload.screamId ? {
+            ...scream,
+            comments: action.payload.comments
+          } : scream
+        )
+      };
     case SUBMIT_COMMENT:
       return {
         ...state,
-        scream: {
+        screams: state.screams.map(
+          (scream) => scream.id === action.payload.screamId ? {
+            ...scream,
+            comments: [
+              ...scream.comments,
+              action.payload
+            ]
+          } : scream
+        )
+        /* scream: {
           ...state.scream,
           comments: [
             action.payload,
             ...state.scream.comments
           ]
-        }
-      }
+        } */
+      };
     case EDIT_SCREAM:
       let updatedScreams = state.screams.map(
-        scream => scream.screamId === action.payload.screamId ? {
+        (scream) => scream.id === action.payload.screamId ? {
           ...scream,
           body: action.payload.text
         } : scream

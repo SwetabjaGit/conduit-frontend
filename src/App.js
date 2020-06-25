@@ -19,7 +19,7 @@ import Navbar from './components/Navbar';
 import home from './pages/home';
 import signup from './pages/signup';
 import login from './pages/login';
-import user from './pages/user';
+import profile from './pages/profile';
 import { API_BASE_URL } from './config/constants'
 
 
@@ -53,8 +53,8 @@ const App = () => {
                 <Route exact path="/" component={home} />
                 <AuthRoute exact path="/login" component={login} />
                 <AuthRoute exact path="/signup" component={signup} />
-                <Route exact path="/users/:handle" component={user} />
-                <Route exact path="/users/:handle/scream/:screamId" component={user} />
+                <Route exact path="/users/:handle" component={profile} />
+                <Route exact path="/users/:handle/scream/:screamId" component={profile} />
               </Switch>
             </div>
           </Router>

@@ -5,7 +5,10 @@ import {
   CLEAR_ERRORS,
   SET_ERRORS,
   SET_SCREAM,
+  SET_COMMENTS,
   CLEAR_SCREAM,
+  SET_PROFILE,
+  CLEAR_PROFILE,
   LIKE_SCREAM,
   UNLIKE_SCREAM,
   EDIT_SCREAM,
@@ -14,7 +17,6 @@ import {
   LOADING_UI,
   STOP_LOADING_UI,
   SUBMIT_COMMENT,
-  LOADING_DATA
 } from '../types';
 import axios from 'axios';
 
@@ -57,9 +59,11 @@ export const getScream = (screamId) => (dispatch) => {
         payload: res.data
       });
       dispatch(clearErrors());
+      dispatch({ type: STOP_LOADING_UI });
     })
     .catch((err) => {
       dispatch(setErrors(err));
+      dispatch({ type: STOP_LOADING_UI });
     });
 };
 
@@ -82,9 +86,11 @@ export const postScream = (formData) => (dispatch) => {
         payload: res.data
       });
       dispatch(clearErrors());
+      dispatch({ type: STOP_LOADING_UI });
     })
     .catch((err) => {
       dispatch(setErrors(err));
+      dispatch({ type: STOP_LOADING_UI });
     });
 };
 
@@ -116,6 +122,26 @@ export const unlikeScream = (screamId) => (dispatch) => {
     });
 };
 
+export const fetchCommentsByScreamId = (screamId) => (dispatch) => {
+  //dispatch({ type: LOADING_UI });
+  axios.get(`/scream/${screamId}/comments`)
+    .then((res) => {
+      dispatch({
+        type: SET_COMMENTS,
+        payload: {
+          screamId: screamId,
+          comments: res.data.collection
+        }
+      });
+      dispatch(clearErrors());
+      //dispatch({ type: STOP_LOADING_UI });
+    })
+    .catch((err) => {
+      dispatch(setErrors(err));
+      //dispatch({ type: STOP_LOADING_UI });
+    });
+};
+
 // Submit a Comment
 export const submitComment = (screamId, commentData) => (dispatch) => {
   axios.post(`/scream/${screamId}/comment`, commentData)
@@ -129,27 +155,58 @@ export const submitComment = (screamId, commentData) => (dispatch) => {
     .catch((err) => {
       dispatch({
         type: SET_ERRORS,
-        payload: err.response.data
+        payload: err
       });
     });
 };
 
+export const updateComment = (commentId, commentData) => (dispatch) => {
+
+};
+
+export const deleteComment = (commentId) => (dispatch) => {
+
+};
+
 // Get all User Data
 export const getUserData = (userHandle) => (dispatch) => {
-  dispatch({ type: LOADING_DATA })
+  dispatch({ type: LOADING_UI });
   axios.get(`/user/${userHandle}`)
     .then((res) => {
       dispatch({
         type: SET_SCREAMS,
         payload: res.data.screams
       });
+      dispatch({ type: STOP_LOADING_UI });
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       dispatch({
         type: SET_SCREAMS,
         payload: null
       });
+      dispatch({ type: STOP_LOADING_UI });
     });
+};
+
+export const fetchProfile = (userHandle) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios.get(`/user/${userHandle}`)
+    .then((res) => {
+      dispatch({
+        type: SET_PROFILE,
+        payload: res.data
+      });
+      dispatch({ type: STOP_LOADING_UI });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: STOP_LOADING_UI });
+    });
+};
+
+export const clearProfile = () => (dispatch) => {
+  dispatch({ type: CLEAR_PROFILE });
 };
 
 export const editScream = (screamId, bodyText) => (dispatch) => {

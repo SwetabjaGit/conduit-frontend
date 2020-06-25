@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -12,7 +13,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 // Redux Stuff
 import { connect } from 'react-redux';
-import { editScream } from '../redux/actions/dataActions';
+import { updateComment } from '../../redux/actions/dataActions';
+
 
 const useStyles = makeStyles(theme => ({
   updateButton: {
@@ -31,16 +33,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const UpdateScream = (props) => {
-
-  const { screamId, scream } = props;
+const EditComment = (props) => {
+  const { commentId, comment } = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [editedBody, setEditedBody] = useState(scream.body);
+  const [editedBody, setEditedBody] = useState({});
+  
 
   useEffect(() => {
-    setEditedBody(scream.body);
-  }, []);
+    setEditedBody({
+      commentId,
+      data: comment.body
+    });
+  }, [comment.body]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -51,12 +56,15 @@ const UpdateScream = (props) => {
   };
 
   const handleTextChange = (event) => {
-    setEditedBody(event.target.value);
+    setEditedBody({
+      ...editedBody,
+      data: event.target.value
+    });
   };
 
   const handleUpdate = () => {
     console.log(editedBody);
-    props.editScream(screamId, editedBody);
+    props.updateComment(commentId, editedBody);
     setOpen(false);
   };
 
@@ -70,7 +78,7 @@ const UpdateScream = (props) => {
         maxWidth="sm"
       >
         <DialogTitle>
-          Update Scream Details
+          Update Comment Details
         </DialogTitle>
         <div className={classes.dialogContent}>
           <TextField
@@ -81,7 +89,6 @@ const UpdateScream = (props) => {
             rowsMax={4}
             value={editedBody}
             onChange={handleTextChange}
-
             variant="outlined"
           />
         </div>
@@ -98,16 +105,21 @@ const UpdateScream = (props) => {
   )
 };
 
-UpdateScream.propTypes = {
-  editScream: PropTypes.func.isRequired,
-  screamId: PropTypes.string.isRequired,
+
+EditComment.propTypes = {
+  updateComment: PropTypes.func.isRequired,
+  commentId: PropTypes.string.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  openEdit: state.UI.editDialogOpen
+});
+
 const mapActionsToProps = {
-  editScream
+  updateComment
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapActionsToProps
-)(UpdateScream);
+)(EditComment);

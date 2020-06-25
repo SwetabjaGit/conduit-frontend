@@ -2,12 +2,14 @@ import {
   SET_ERRORS, 
   CLEAR_ERRORS, 
   LOADING_UI,
-  STOP_LOADING_UI
+  STOP_LOADING_UI,
 } from '../types';
 
 const initialState = {
   loading: false,
-  errors: null
+  errors: null,
+  editDialogOpen: true,
+  deleteDialogOpen: true
 };
 
 export default (state = initialState, action) => {
