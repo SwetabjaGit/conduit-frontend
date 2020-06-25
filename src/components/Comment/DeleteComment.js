@@ -1,33 +1,20 @@
 import React, { useState } from 'react';
-import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
-import NavbarButton from '../util/NavbarButton';
 
 // MUI Stuff
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 // Redux Stuff
 import { connect } from 'react-redux';
-import { deleteScream } from '../redux/actions/dataActions';
-
-const styles = {
-  deleteButton: {
-    position: 'absolute',
-    left: '90%',
-    top: '10%'
-  }
-};
+import { deleteComment } from '../../redux/actions/dataActions';
 
 
-const DeleteScream = (props) => {
-
-  const { classes, screamId } = props;
+const DeleteComment = (props) => {
+  const { commentId } = props;
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -39,23 +26,13 @@ const DeleteScream = (props) => {
   };
 
   const deleteScream = () => {
-    props.deleteScream(screamId);
+    props.deleteComment(commentId);
     setOpen(false);
   };
 
-  const deleteButton = (
-    <NavbarButton
-      tip="Delete Scream"
-      onClick={handleOpen}
-      btnClassName={classes.deleteButton}
-    >
-      <DeleteOutline color="secondary" />
-    </NavbarButton>
-  );
 
   return (
-    <div>
-      {deleteButton}
+    <div ref={props.innerRef}>
       <MenuItem onClick={handleOpen}>Delete</MenuItem>
       <Dialog
         open={open}
@@ -64,7 +41,7 @@ const DeleteScream = (props) => {
         maxWidth="sm"
       >
         <DialogTitle>
-          Are you sure you want to delete this scream?
+          Are you sure you want to delete this comment?
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -79,17 +56,20 @@ const DeleteScream = (props) => {
   )
 };
 
-DeleteScream.propTypes = {
-  classes: PropTypes.object.isRequired,
-  deleteScream: PropTypes.func.isRequired,
-  screamId: PropTypes.string.isRequired,
+DeleteComment.propTypes = {
+  deleteComment: PropTypes.func.isRequired,
+  commentId: PropTypes.string.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  openDelete: state.UI.deleteDialogOpen
+});
+
 const mapActionsToProps = {
-  deleteScream
+  deleteComment
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapActionsToProps
-)(withStyles(styles)(DeleteScream));
+)(DeleteComment);

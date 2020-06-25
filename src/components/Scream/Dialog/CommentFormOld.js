@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 
 // Redux Stuff
 import { connect } from 'react-redux';
-import { submitComment } from '../redux/actions/dataActions';
+import { submitComment } from '../../../redux/actions/dataActions';
 
 
 const styles = (theme) => ({
@@ -33,7 +33,6 @@ const styles = (theme) => ({
 const CommentForm = (props) => {
 
   const { authenticated, classes, screamId } = props;
-
   const [body, setBody] = useState({ body: '' });
   const [errors, setErrors] = useState({});
 

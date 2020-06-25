@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
@@ -6,7 +6,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Components
 //import Scream from '../components/Scream';
-import ScreamItem from '../components/ScreamItem';
+import ScreamItem from '../components/Scream/ScreamItem';
 import Profile from '../components/Profile';
 import ScreamSkeleton from '../util/ScreamSkeleton';
 import {
@@ -42,31 +42,26 @@ const Home = (props) => {
     classes,
     screams,
     loading,
-    fetchScreams,
     nextHref,
     hasMoreItems
   } = props;
 
-  useEffect(() => {
-    console.log(screams);
-  }, [screams]);
+  const loader = (
+    <CircularProgress
+      key={0}
+      className={classes.progress}
+      color="secondary" 
+      style={{ color: '#D41' }} 
+    />
+  );
 
   const fetchMoreData = () => {
     let screamsUrl = `${SCREAMS_URL}?page_size=${SCREAMS_PAGE_SIZE}`;
     if(nextHref){
       screamsUrl = nextHref;
     }
-    fetchScreams(screamsUrl);
+    props.fetchScreams(screamsUrl);
   };
-
-  const loader = (
-    <CircularProgress
-      key={0}
-      className={classes.progress} 
-      color="secondary" 
-      style={{ color: '#D41' }} 
-    />
-  );
 
   const fetchedScreams = loading ? (
     <ScreamSkeleton/>
@@ -76,7 +71,7 @@ const Home = (props) => {
       loadMore={fetchMoreData}
       hasMore={hasMoreItems}
       loader={screams.length === 0 
-        ? <ScreamSkeleton key={0} /> 
+        ? <ScreamSkeleton key={0} />
         : loader
       }
     >
@@ -99,7 +94,6 @@ const Home = (props) => {
       </Grid>
     </Grid>
   );
-
 };
 
 

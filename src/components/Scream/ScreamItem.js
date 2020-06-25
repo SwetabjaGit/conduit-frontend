@@ -4,21 +4,23 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardActionArea from '@material-ui/core/CardActionArea';
+//import CardActionArea from '@material-ui/core/CardActionArea';
+//import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
+import Link from '@material-ui/core/Link';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import Divider from '@material-ui/core/Divider';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { red } from '@material-ui/core/colors';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 // Icons
@@ -30,13 +32,19 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 // Components
-import EditScream from './UpdateScream';
+import UpdateScream from './UpdateScream';
 import DeleteScream from './DeleteScream';
-import ScreamDialog from './ScreamDialog';
+import CommentBubble from '../Comment/CommentBubble';
+import CommentForm from '../Comment/CommentForm';
+import ScreamDialog from './Dialog/ScreamDialog';
 
 // Redux
 import { connect } from 'react-redux';
-import { likeScream, unlikeScream } from '../redux/actions/dataActions';
+import { 
+  likeScream, 
+  unlikeScream,
+  fetchCommentsByScreamId
+} from '../../redux/actions/dataActions';
 
 
 
@@ -88,7 +96,28 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 40,
     maxHeight: 40
   },
+  comments: {
+    margin: theme.spacing(2, 0),
+  },
+  divider: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    backgroundColor: '#ccc'
+  },
+  commentsList: {
+    //border: '1px solid black',
+    height: '100px'
+  },
+  progress: {
+    width: '100%',
+    marginLeft: '45%',
+    marginTop: 30,
+  },
+  cardContent: {
+    marginBottom: -20
+  }
 }));
+
 
 const ScreamItem = props => {
   const { 
@@ -101,19 +130,27 @@ const ScreamItem = props => {
   dayjs.extend(relativeTime);
   let screamId = props.scream.id;
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(scream.likeCount);
   const [anchorEl, setAnchorEl] = useState(null);
   const ITEM_HEIGHT = 48;
+
   
   useEffect(() => {
     let likeExists = userLikes && userLikes.find(
       (like) => like.screamId === screamId
     );
-    //console.log({ likeExists });
     setLiked(likeExists);
   }, [userLikes]);
+
+
+  useEffect(() => {
+    if(expanded === true) {
+      console.log(`Fetching comments for ${screamId}, ${scream.comments}`);
+      props.fetchCommentsByScreamId(screamId);
+    }
+  }, [expanded]);
 
 
   const handleExpandClick = () => {
@@ -142,9 +179,10 @@ const ScreamItem = props => {
     
   window.onmousedown = (event) => {
     handleMenuClose();
-  }
+  };
 
-  const screamMenu = (
+
+  const ScreamMenu = (
     <Menu
       id="long-menu"
       anchorEl={anchorEl}
@@ -158,11 +196,10 @@ const ScreamItem = props => {
         },
       }}
     >
-      <EditScream screamId={screamId} scream={scream} />
+      <UpdateScream screamId={screamId} scream={scream}/>
       <DeleteScream screamId={screamId}/>
     </Menu>
   );
-
 
 
   const likeButton = !authenticated ? (
@@ -196,33 +233,31 @@ const ScreamItem = props => {
     </Tooltip>
   );
 
+  const commentLoader = (
+    <CircularProgress 
+      className={classes.progress}
+      color="secondary" 
+    />
+  );
 
   return (
     <Card className={classes.card}>
-      <Link 
-        to={`/scream/${scream.id}`}
-      >
-        <CardActionArea 
-          className={classes.actionArea}
-        >
-          <CardMedia
-            component="img"
-            alt="ContentImage"
-            className={classes.media}
-            image={scream.contentImage}
-            title="ContentImage"
-          >
-          </CardMedia>
-        </CardActionArea>
+      <Link to={`/scream/${scream.id}`}>
+        <ScreamDialog
+          scream={scream}
+          screamId={screamId}
+          userImage={scream.userImage}
+          userHandle={scream.userHandle}
+        />
       </Link>
       <div className={classes.content}>
         <CardHeader
           className={classes.cardHeader}
           avatar={
-            <Link to={`/profile/${scream.userHandle}/myfeed`}>
+            <Link to={`/users/${scream.userHandle}`}>
               <Avatar 
                 aria-label="recipe" 
-                className={classes.avatar} 
+                className={classes.avatar}
                 src={scream.userImage} 
               />
             </Link>
@@ -240,11 +275,21 @@ const ScreamItem = props => {
               </IconButton>
             )            
           }
-          title={scream.userHandle}
+          title={
+            <Link
+              style={{ marginRight: 15 }}
+              color="textPrimary"
+              component={RouterLink}
+              to={`/users/${scream.userHandle}`}
+              variant="body2"
+            >
+              {scream.userName}
+            </Link>
+          }
           subheader={dayjs(scream.createdAt).fromNow()}
         />
         <CardContent className={classes.cardText}>
-          <Typography variant="h6" style={{fontWeight: 'bold', marginBottom: 4}}>
+          <Typography variant="body1" style={{fontWeight: 'bold', marginBottom: 4}}>
             {scream.userName}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
@@ -285,34 +330,25 @@ const ScreamItem = props => {
           </IconButton>
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography paragraph>Method:</Typography>
-            <Typography paragraph>
-              Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
-              minutes.
-            </Typography>
-            <Typography paragraph>
-              Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over medium-high
-              heat. Add chicken, shrimp and chorizo, and cook, stirring occasionally until lightly
-              browned, 6 to 8 minutes. Transfer shrimp to a large plate and set aside, leaving chicken
-              and chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes, onion, salt and
-              pepper, and cook, stirring often until thickened and fragrant, about 10 minutes. Add
-              saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-            </Typography>
-            <Typography paragraph>
-              Add rice and stir very gently to distribute. Top with artichokes and peppers, and cook
-              without stirring, until most of the liquid is absorbed, 15 to 18 minutes. Reduce heat to
-              medium-low, add reserved shrimp and mussels, tucking them down into the rice, and cook
-              again without stirring, until mussels have opened and rice is just tender, 5 to 7
-              minutes more. (Discard any mussels that don’t open.)
-            </Typography>
-            <Typography>
-              Set aside off of the heat to let rest for 10 minutes, and then serve.
-            </Typography>
+          <CardContent className={classes.cardContent}>
+            <Typography paragraph>Comments:</Typography>
+            <Divider className={classes.divider} />
+            {scream.comments ? (
+              <div className={classes.comments}>
+                {scream.comments.map(comment => (
+                  <CommentBubble
+                    comment={comment}
+                    key={comment.id}
+                  />
+                ))}
+              </div>
+            ) : commentLoader}
+            <Divider className={classes.divider} />
+            <CommentForm screamId={scream.id}/>
           </CardContent>
         </Collapse>
       </div>
-      {screamMenu}
+      {ScreamMenu}
     </Card>
   );
 };
@@ -335,7 +371,8 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
   likeScream,
-  unlikeScream
+  unlikeScream,
+  fetchCommentsByScreamId
 };
 
 export default connect(

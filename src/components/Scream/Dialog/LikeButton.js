@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NavbarButton from '../util/NavbarButton';
+import NavbarButton from '../../../util/NavbarButton';
 import { Link } from 'react-router-dom';
 
 // Icons
@@ -9,7 +9,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 // Redux
 import { connect } from 'react-redux';
-import { likeScream, unlikeScream } from '../redux/actions/dataActions';
+import { likeScream, unlikeScream } from '../../../redux/actions/dataActions';
 
 
 const LikeButton = (props) => {
