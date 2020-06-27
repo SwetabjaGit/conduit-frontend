@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -36,10 +37,14 @@ const UpdateScream = (props) => {
   const { screamId, scream } = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [editedBody, setEditedBody] = useState(scream.body);
+  const [editedBody, setEditedBody] = useState({});
 
+  
   useEffect(() => {
-    setEditedBody(scream.body);
+    setEditedBody({
+      screamId,
+      data: scream.body
+    });
   }, [scream.body]);
 
   const handleOpen = () => {
@@ -51,12 +56,15 @@ const UpdateScream = (props) => {
   };
 
   const handleTextChange = (event) => {
-    setEditedBody(event.target.value);
+    setEditedBody({
+      ...editedBody,
+      data: event.target.value
+    });
   };
 
   const handleUpdate = () => {
     console.log(editedBody);
-    props.editScream(screamId, editedBody);
+    props.editScream(editedBody);
     setOpen(false);
   };
 

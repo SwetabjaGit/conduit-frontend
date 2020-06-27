@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 // MUI
@@ -17,7 +17,7 @@ import { fetchProfile, clearProfile } from '../redux/actions/dataActions';
 
 const Profile = (props) => {
   const { match, profile, loading } = props;
-  //const [screamIdParam, setScreamIdParam] = useState(null);
+  const [screamIdParam, setScreamIdParam] = useState(null);
 
   window.onpopstate = () => {
     props.clearProfile();
@@ -27,10 +27,13 @@ const Profile = (props) => {
     const handle = match.params.handle;
     const screamId = match.params.screamId;
     console.log({ handle, screamId });
-    //if(screamId) setScreamIdParam(screamId);
+    if(screamId) setScreamIdParam(screamId);
     props.fetchProfile(handle);
   }, []);
 
+  useEffect(() => {
+    console.log({ screamIdParam });
+  }, [screamIdParam]);
 
   /* const screamsMarkup = loading ? (
     <ScreamSkeleton />
@@ -66,7 +69,9 @@ const Profile = (props) => {
     profile.screams.map((scream) => (
       <ScreamItem
         key={scream.screamId} 
-        scream={scream} 
+        scream={scream}
+        screamIdParam={screamIdParam}
+        isProfile={true}
       />
     ))
   );
@@ -85,7 +90,6 @@ const Profile = (props) => {
       </Grid>
     </Grid>
   );
-
 };
 
 Profile.propTypes = {

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import moment from 'moment';
 import makeStyles from '@material-ui/styles/makeStyles';
 import Avatar from '@material-ui/core/Avatar';
@@ -11,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 
+// Components
 import EditComment from './EditComment';
 import DeleteComment from './DeleteComment';
 
@@ -46,7 +46,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const CommentBubble = props => {
-  const { comment, className, ...rest } = props;
+  const { 
+    comment,
+    authenticated,
+    authenticatedUser
+  } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
   const ITEM_HEIGHT = 48;
@@ -83,10 +87,7 @@ const CommentBubble = props => {
   );
 
   return (
-    <div
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
+    <div className={classes.root}>
       <Avatar
         className={classes.commentAvatar}
         alt="Person"
@@ -120,21 +121,29 @@ const CommentBubble = props => {
           {comment.body}
         </Typography>
       </div>
-      <IconButton
-        aria-label="settings"
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-      >
-        <MoreVertIcon />
-      </IconButton>
-      {CommentMenu}
+      {authenticated && 
+        comment.userHandle === authenticatedUser && (
+          <div>
+            <IconButton
+              aria-label="settings"
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={handleMenuOpen}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            {CommentMenu}
+          </div>
+        )
+      }
     </div>
   );
 };
 
 CommentBubble.propTypes = {
-  className: PropTypes.string,
-  comment: PropTypes.object.isRequired
+  comment: PropTypes.object.isRequired,
+  authenticated: PropTypes.bool.isRequired,
+  authenticatedUser: PropTypes.string.isRequired
 };
 
 export default CommentBubble;

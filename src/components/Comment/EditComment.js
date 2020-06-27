@@ -13,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 // Redux Stuff
 import { connect } from 'react-redux';
-import { updateComment } from '../../redux/actions/dataActions';
+import { editComment } from '../../redux/actions/dataActions';
 
 
 const useStyles = makeStyles(theme => ({
@@ -64,7 +64,7 @@ const EditComment = (props) => {
 
   const handleUpdate = () => {
     console.log(editedBody);
-    props.updateComment(commentId, editedBody);
+    props.editComment(editedBody);
     setOpen(false);
   };
 
@@ -87,7 +87,7 @@ const EditComment = (props) => {
             label="Multiline"
             multiline
             rowsMax={4}
-            value={editedBody}
+            value={editedBody.data}
             onChange={handleTextChange}
             variant="outlined"
           />
@@ -107,7 +107,7 @@ const EditComment = (props) => {
 
 
 EditComment.propTypes = {
-  updateComment: PropTypes.func.isRequired,
+  editComment: PropTypes.func.isRequired,
   commentId: PropTypes.string.isRequired,
 };
 
@@ -116,7 +116,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-  updateComment
+  editComment
 };
 
 export default connect(

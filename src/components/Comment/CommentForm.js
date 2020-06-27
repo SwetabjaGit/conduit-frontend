@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import {
   Avatar,
-  Divider,
   IconButton,
   Input,
   Paper,
@@ -30,10 +29,11 @@ const useStyles = makeStyles(theme => ({
     border: '1px solid #adadad',
     flexGrow: 1,
     marginLeft: theme.spacing(2),
-    padding: theme.spacing(0.5, 2)
+    padding: theme.spacing(0.5, 2),
   },
   input: {
-    width: '100%'
+    flexGrow: 1,
+    minWidth: '100%'
   },
   divider: {
     width: 1,
@@ -66,7 +66,7 @@ const CommentForm = (props) => {
     event.preventDefault();
     props.submitComment(screamId, comment);
     setComment({});
-    event.target.value = '';
+    commentRef.current.value = '';
     console.log({ comment });
   };
 
@@ -78,6 +78,32 @@ const CommentForm = (props) => {
       console.log({ comment });
     }
   };
+
+  const fileAttachButtons = (
+    <div>
+      <Tooltip title="Attach image">
+        <IconButton
+          edge="end"
+          onClick={handleAttach}
+        >
+          <AddPhotoIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Attach file">
+        <IconButton
+          edge="end"
+          onClick={handleAttach}
+        >
+          <AttachFileIcon />
+        </IconButton>
+      </Tooltip>
+      <input
+        className={classes.fileInput}
+        ref={fileInputRef}
+        type="file"
+      />
+    </div>
+  );
 
 
   const commentFormMarkup = authenticated ? (
@@ -107,28 +133,6 @@ const CommentForm = (props) => {
           <SendIcon />
         </IconButton>
       </Tooltip>
-      <Divider className={classes.divider} />
-      <Tooltip title="Attach image">
-        <IconButton
-          edge="end"
-          onClick={handleAttach}
-        >
-          <AddPhotoIcon />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Attach file">
-        <IconButton
-          edge="end"
-          onClick={handleAttach}
-        >
-          <AttachFileIcon />
-        </IconButton>
-      </Tooltip>
-      <input
-        className={classes.fileInput}
-        ref={fileInputRef}
-        type="file"
-      />
     </div>
   ) : null;
 
