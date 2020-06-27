@@ -12,8 +12,12 @@ import {
   DELETE_SCREAM,
   CLEAR_SCREAM,
   SET_COMMENTS,
-  SUBMIT_COMMENT
+  SET_PROFILE_COMMENTS,
+  SUBMIT_COMMENT,
+  EDIT_COMMENT,
+  DELETE_COMMENT
 } from '../types';
+import { isEmpty } from '../../util/objectUtils';
 
 
 const initialState = {
@@ -89,6 +93,23 @@ export default (state = initialState, action) => {
           action.payload
         ]
       };
+    case EDIT_SCREAM:
+      return {
+        ...state,
+        screams: state.screams.map(
+          (scream) => scream.id === action.payload.screamId ? {
+            ...scream,
+            body: action.payload.text
+          } : scream
+        )
+      };
+    case DELETE_SCREAM:
+      return {
+        ...state,
+        screams: state.screams.filter(
+          (scream) => scream.screamId !== action.payload 
+        )
+      };
     case LIKE_SCREAM:
     case UNLIKE_SCREAM:
       let index = state.screams.findIndex(
@@ -111,6 +132,19 @@ export default (state = initialState, action) => {
           } : scream
         )
       };
+    case SET_PROFILE_COMMENTS:
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          screams: state.profile.screams.map(
+            (scream) => scream.id === action.payload.screamId ? {
+              ...scream,
+              comments: action.payload.comments
+            } : scream
+          )
+        }
+      };
     case SUBMIT_COMMENT:
       return {
         ...state,
@@ -122,31 +156,44 @@ export default (state = initialState, action) => {
               action.payload
             ]
           } : scream
-        )
-        /* scream: {
+        ),
+        scream: !isEmpty(state.scream) ? {
           ...state.scream,
           comments: [
             action.payload,
             ...state.scream.comments
           ]
-        } */
+        } : state.scream
       };
-    case EDIT_SCREAM:
-      let updatedScreams = state.screams.map(
-        (scream) => scream.id === action.payload.screamId ? {
-          ...scream,
-          body: action.payload.text
-        } : scream
-      );
+    case EDIT_COMMENT:
       return {
         ...state,
-        screams: updatedScreams
+        screams: state.screams.map(
+          (scream) => {
+            if(scream.id === action.payload.screamId) {
+              scream.comments.map(
+                (comment) => comment.id === action.payload.commentId ? {
+                  ...comment,
+                  body: action.payload.data
+                } : comment
+              )
+            }
+            return scream;
+          }
+        )
       };
-    case DELETE_SCREAM:
+    case DELETE_COMMENT:
       return {
         ...state,
-        screams: state.screams.filter(
-          (scream) => scream.screamId !== action.payload 
+        screams: state.screams.map(
+          (scream) => {
+            if(scream.id === action.payload.screamId) {
+              scream.comments.filter(
+                (comment) => comment.id !== action.payload.commentId
+              )
+            }
+            return scream;
+          }
         )
       };
     default:

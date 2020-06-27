@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,15 +9,16 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
+import Divider from '@material-ui/core/Divider';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 // Components
 import NavbarButton from '../../../util/NavbarButton';
+import { isEmpty } from '../../../util/objectUtils';
 import LikeButton from './LikeButton';
-import Comments from './Comments';
-import CommentForm from './CommentFormOld';
+import CommentBubble from '../../Comment/CommentBubble';
+import CommentForm from '../../Comment/CommentForm';
 
 // Icons
 import CloseIcon from '@material-ui/icons/Close';
@@ -39,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     objectFit: 'cover'
   },
   dialogContent: {
-    padding: 20
+    //padding: 20
   },
   closeButton: {
     position: 'absolute',
@@ -61,46 +63,61 @@ const useStyles = makeStyles((theme) => ({
   visibleSeparator: {
     width: '100%',
     borderBottom: '1px solid rgba(0,0,0,0.1)',
-    marginBottom: 20
+    marginBottom: 10
   },
   actionArea: {
-    maxWidth: 200,
-    maxHeight: 200
-  },
-  media: {
-    minWidth: 200,
+    width: 200,
     height: 200
   },
+  media: {
+    width: 200,
+    height: 200
+  },
+  commentForm: {
+  },
+  divider: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    height: 1,
+    backgroundColor: '#ccc'
+  },
+  commentBox: {
+    margin: theme.spacing(3, 1, 3, 6),
+  }
 }));
 
 
 const ScreamDialog = (props) => {
   const {
     scream,
-    loading,
     screamId,
-    userImage,
+    contentImage,
     userHandle,
+    screamIdParam,
+    authenticated,
+    authenticatedUser
   } = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [oldPath, setOldPath] = useState('');
   //const [newPath, setNewPath] = useState('');
 
-
   useEffect(() => {
     scream === null && console.log('Fetching Scream.');
-    console.log({ scream });
   }, [scream]);
 
+  useEffect(() => {
+    screamIdParam === screamId && handleOpen();
+  }, [screamIdParam]);
+  
   const handleOpen = () => {
-    setOpen(true);
     console.log('Handle Open Called');
     let oldPath = window.location.pathname;
     const newPath = `/users/${userHandle}/scream/${screamId}`;
     if(oldPath === newPath) oldPath = `/users/${userHandle}`;
     window.history.pushState(null, null, newPath);
     setOldPath(oldPath);
+    setOpen(true);
     props.getScream(screamId);
   };
 
@@ -115,57 +132,77 @@ const ScreamDialog = (props) => {
   };
   
 
-  const dialogMarkup = loading ? (
+  const dialogMarkup = isEmpty(scream) ? (
     <div className={classes.spinnerDiv}>
       <CircularProgress size={200} thickness={2} />
     </div>
   ) : (
-    <Grid container spacing={2}>
-      <Grid item sm={5}>
-        <img src={userImage} alt="Profile" className={classes.profileImage} />
-      </Grid>
-      <Grid item sm={7}>
-        <Typography
-          component={Link}
-          color="primary"
-          variant="h5"
-          to={`/users/${userHandle}`}
-        >
-          {scream.userName}
-        </Typography>
-        <hr className={classes.invisibleSeparator} />
-          <Typography variant="body2" color="textSecondary">
-            {dayjs(scream.createdAt).format('h:mm a, MMMM DD YYYY')}
+    <div>
+      <Grid container spacing={2}>
+        <Grid item sm={5}>
+          <img 
+            src={scream.userImage} 
+            alt="Profile" 
+            className={classes.profileImage} 
+          />
+        </Grid>
+        <Grid item sm={7}>
+          <Typography
+            color="primary"
+            variant="h5"
+          >
+            {scream.userName}
           </Typography>
-        <hr className={classes.invisibleSeparator} />
-        <Typography variant="body1">
-          {scream.body}
-        </Typography>
-        <LikeButton screamId={screamId} />
-        <span>{scream.likeCount} likes</span>
-        <NavbarButton tip="comments">
-          <ChatIcon color="primary" />
-        </NavbarButton>
-        <span>{scream.commentCount} comments</span>
+          <hr className={classes.invisibleSeparator} />
+            <Typography variant="body2" color="textSecondary">
+              {dayjs(scream.createdAt).format('h:mm a, MMMM DD YYYY')}
+            </Typography>
+          <hr className={classes.invisibleSeparator} />
+          <Typography variant="body1">
+            {scream.body}
+          </Typography>
+          <LikeButton screamId={screamId} />
+          <span>{scream.likeCount} likes</span>
+          <NavbarButton tip="comments">
+            <ChatIcon color="primary" />
+          </NavbarButton>
+          <span>{scream.commentCount} comments</span>
+        </Grid>
       </Grid>
-      <hr className={classes.visibleSeparator} />
-      <CommentForm screamId={screamId} />
-      <Comments comments={scream.comments} />
-    </Grid>
+      <Divider className={classes.divider}/>
+      <CommentForm
+        className={classes.commentForm}
+        screamId={scream.id}
+      />
+      <Divider className={classes.divider}/>
+      <div className={classes.commentBox}>
+        {scream.comments ? (
+          <div className={classes.comments}>
+            {scream.comments.map((comment, i) => (
+              <CommentBubble
+                key={`${comment.id}_${i}`}
+                comment={comment}
+                authenticated={authenticated}
+                authenticatedUser={authenticatedUser}
+              />
+            ))}
+          </div>
+        ) : <CircularProgress size={80} thickness={1}/>}
+      </div>
+    </div>
   );
 
   return (
     <div>
-      <CardActionArea 
-        onClick={handleOpen} 
+      <CardActionArea
+        onClick={handleOpen}
         className={classes.actionArea}
       >
         <CardMedia
           component="img"
           alt="ContentImage"
-          
           className={classes.media}
-          image={scream.contentImage}
+          image={contentImage}
           title="ContentImage"
         />
       </CardActionArea>
@@ -182,9 +219,9 @@ const ScreamDialog = (props) => {
         >
           <CloseIcon />
         </NavbarButton>
-        <DialogTitle>Scream Details of @{userHandle}</DialogTitle>
+        <DialogTitle>Scream Details of @{scream.userHandle}</DialogTitle>
         <DialogContent className={classes.dialogContent} >
-          {scream && dialogMarkup}
+          {dialogMarkup}
         </DialogContent>
       </Dialog>
     </div>
@@ -192,6 +229,7 @@ const ScreamDialog = (props) => {
 };
 
 ScreamDialog.propTypes = {
+  scream: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
   getScream: PropTypes.func.isRequired,
   clearErrors: PropTypes.func.isRequired,
@@ -199,7 +237,7 @@ ScreamDialog.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  //scream: state.data.scream,
+  scream: state.data.scream,
   loading: state.UI.loading
 });
 

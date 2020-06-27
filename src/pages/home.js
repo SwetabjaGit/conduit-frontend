@@ -79,6 +79,7 @@ const Home = (props) => {
         <ScreamItem
           key={scream.id}
           scream={scream}
+          isProfile={false}
         />
       ))}
     </InfiniteScroll>

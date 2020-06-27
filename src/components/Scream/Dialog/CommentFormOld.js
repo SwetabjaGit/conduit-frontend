@@ -21,7 +21,8 @@ const styles = (theme) => ({
     marginRight: 3
   },
   button: {
-    marginLeft: 3
+    marginLeft: 3,
+    height: 30
   },
   visibleSeparator: {
     width: '100%',
@@ -66,6 +67,7 @@ const CommentForm = (props) => {
           className={classes.textField}
           name="body"
           variant="outlined"
+          margin="dense"
           type="text"
           value={body.body}
           label="Comment on scream"
@@ -76,7 +78,6 @@ const CommentForm = (props) => {
         />
         <Button
           className={classes.button}
-          type="submit"
           variant="contained"
           color="primary"
         >

@@ -6,6 +6,7 @@ import {
   SET_ERRORS,
   SET_SCREAM,
   SET_COMMENTS,
+  SET_PROFILE_COMMENTS,
   CLEAR_SCREAM,
   SET_PROFILE,
   CLEAR_PROFILE,
@@ -17,6 +18,8 @@ import {
   LOADING_UI,
   STOP_LOADING_UI,
   SUBMIT_COMMENT,
+  EDIT_COMMENT,
+  DELETE_COMMENT,
 } from '../types';
 import axios from 'axios';
 
@@ -51,7 +54,6 @@ export const setScreams = (data) => (dispatch) => {
 
 // Get one scream
 export const getScream = (screamId) => (dispatch) => {
-  dispatch({ type: LOADING_UI });
   axios.get(`/scream/${screamId}`)
     .then((res) => {
       dispatch({
@@ -59,11 +61,9 @@ export const getScream = (screamId) => (dispatch) => {
         payload: res.data
       });
       dispatch(clearErrors());
-      dispatch({ type: STOP_LOADING_UI });
     })
     .catch((err) => {
       dispatch(setErrors(err));
-      dispatch({ type: STOP_LOADING_UI });
     });
 };
 
@@ -94,7 +94,33 @@ export const postScream = (formData) => (dispatch) => {
     });
 };
 
-// Like a scream
+export const editScream = (scream) => (dispatch) => {
+  axios.put(`/scream/${scream.screamId}`, scream)
+    .then((res) => {
+      console.log(res.data);
+      dispatch({
+        type: EDIT_SCREAM,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const deleteScream = (screamId) => (dispatch) => {
+  axios.delete(`/scream/${screamId}`)
+    .then(() => {
+      dispatch({
+        type: DELETE_SCREAM,
+        payload: screamId
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
 export const likeScream = (screamId) => (dispatch) => {
   axios.post(`/scream/${screamId}/like`)
     .then(res => {
@@ -108,7 +134,6 @@ export const likeScream = (screamId) => (dispatch) => {
     });
 };
 
-// Unlike a scream
 export const unlikeScream = (screamId) => (dispatch) => {
   axios.delete(`/scream/${screamId}/unlike`)
     .then(res => {
@@ -122,27 +147,33 @@ export const unlikeScream = (screamId) => (dispatch) => {
     });
 };
 
-export const fetchCommentsByScreamId = (screamId) => (dispatch) => {
-  //dispatch({ type: LOADING_UI });
+export const fetchCommentsByScreamId = (screamId, isProfile) => (dispatch) => {
   axios.get(`/scream/${screamId}/comments`)
     .then((res) => {
-      dispatch({
-        type: SET_COMMENTS,
-        payload: {
-          screamId: screamId,
-          comments: res.data.collection
-        }
-      });
+      if(isProfile === true) {
+        dispatch({
+          type: SET_PROFILE_COMMENTS,
+          payload: {
+            screamId: screamId,
+            comments: res.data.collection
+          }
+        });
+      } else {
+        dispatch({
+          type: SET_COMMENTS,
+          payload: {
+            screamId: screamId,
+            comments: res.data.collection
+          }
+        });
+      }
       dispatch(clearErrors());
-      //dispatch({ type: STOP_LOADING_UI });
     })
     .catch((err) => {
       dispatch(setErrors(err));
-      //dispatch({ type: STOP_LOADING_UI });
     });
 };
 
-// Submit a Comment
 export const submitComment = (screamId, commentData) => (dispatch) => {
   axios.post(`/scream/${screamId}/comment`, commentData)
     .then((res) => {
@@ -160,13 +191,37 @@ export const submitComment = (screamId, commentData) => (dispatch) => {
     });
 };
 
-export const updateComment = (commentId, commentData) => (dispatch) => {
-
+export const editComment = (comment) => (dispatch) => {
+  axios.put(`/scream/editcomment/${comment.commentId}`, comment)
+    .then((res) => {
+      console.log({ comment: res.data});
+      dispatch({
+        type: EDIT_COMMENT,
+        payload: {
+          ...res.data,
+          data: comment.data
+        }
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 export const deleteComment = (commentId) => (dispatch) => {
-
+  axios.delete(`/scream/deletecomment/${commentId}`)
+    .then((res) => {
+      console.log({ comment: res.data});
+      dispatch({
+        type: DELETE_COMMENT,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
+
 
 // Get all User Data
 export const getUserData = (userHandle) => (dispatch) => {
@@ -207,38 +262,6 @@ export const fetchProfile = (userHandle) => (dispatch) => {
 
 export const clearProfile = () => (dispatch) => {
   dispatch({ type: CLEAR_PROFILE });
-};
-
-export const editScream = (screamId, bodyText) => (dispatch) => {
-  let payload = {
-    screamId: screamId,
-    text: bodyText
-  };
-  axios.put(`/scream/${screamId}`, payload)
-    .then((res) => {
-      console.log(res.data);
-      dispatch({
-        type: EDIT_SCREAM,
-        payload: res.data
-      });
-    })
-    .catch(err => {
-      console.log(err);
-    });
-};
-
-// Delete a scream
-export const deleteScream = (screamId) => (dispatch) => {
-  axios.delete(`/scream/${screamId}`)
-    .then(() => {
-      dispatch({
-        type: DELETE_SCREAM,
-        payload: screamId
-      });
-    })
-    .catch(err => {
-      console.log(err);
-    });
 };
 
 export const clearErrors = () => (dispatch) => {

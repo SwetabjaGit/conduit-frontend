@@ -120,11 +120,13 @@ const useStyles = makeStyles(theme => ({
 
 
 const ScreamItem = props => {
-  const { 
+  const {
     scream,
     authenticated,
     credentials,
-    userLikes
+    userLikes,
+    screamIdParam,
+    isProfile
   } = props;
 
   dayjs.extend(relativeTime);
@@ -148,7 +150,7 @@ const ScreamItem = props => {
   useEffect(() => {
     if(expanded === true) {
       console.log(`Fetching comments for ${screamId}, ${scream.comments}`);
-      props.fetchCommentsByScreamId(screamId);
+      props.fetchCommentsByScreamId(screamId, isProfile);
     }
   }, [expanded]);
 
@@ -244,17 +246,22 @@ const ScreamItem = props => {
     <Card className={classes.card}>
       <Link to={`/scream/${scream.id}`}>
         <ScreamDialog
-          scream={scream}
           screamId={screamId}
-          userImage={scream.userImage}
+          contentImage={scream.contentImage}
           userHandle={scream.userHandle}
+          screamIdParam={screamIdParam}
+          authenticated={authenticated}
+          authenticatedUser={credentials.handle}
         />
       </Link>
       <div className={classes.content}>
         <CardHeader
           className={classes.cardHeader}
           avatar={
-            <Link to={`/users/${scream.userHandle}`}>
+            <Link
+              component={RouterLink}
+              to={`/users/${scream.userHandle}`}
+            >
               <Avatar 
                 aria-label="recipe" 
                 className={classes.avatar}
@@ -332,18 +339,20 @@ const ScreamItem = props => {
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent className={classes.cardContent}>
             <Typography paragraph>Comments:</Typography>
-            <Divider className={classes.divider} />
+            <Divider className={classes.divider}/>
             {scream.comments ? (
               <div className={classes.comments}>
                 {scream.comments.map(comment => (
                   <CommentBubble
-                    comment={comment}
                     key={comment.id}
+                    comment={comment}
+                    authenticated={authenticated}
+                    authenticatedUser={credentials.handle}
                   />
                 ))}
               </div>
             ) : commentLoader}
-            <Divider className={classes.divider} />
+            <Divider className={classes.divider}/>
             <CommentForm screamId={scream.id}/>
           </CardContent>
         </Collapse>
