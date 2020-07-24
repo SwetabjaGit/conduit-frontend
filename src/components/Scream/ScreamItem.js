@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -32,8 +32,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 // Components
-import UpdateScream from './UpdateScream';
-import DeleteScream from './DeleteScream';
+import EditDialog from './EditDialog';
+import DeleteDialog from './DeleteDialog';
 import CommentBubble from '../Comment/CommentBubble';
 import CommentForm from '../Comment/CommentForm';
 import ScreamDialog from './Dialog/ScreamDialog';
@@ -137,6 +137,8 @@ const ScreamItem = props => {
   const [likes, setLikes] = useState(scream.likeCount);
   const [anchorEl, setAnchorEl] = useState(null);
   const ITEM_HEIGHT = 48;
+  const editRef = useRef(null);
+  const deleteRef = useRef(null);
 
   
   useEffect(() => {
@@ -184,26 +186,6 @@ const ScreamItem = props => {
   };
 
 
-  const ScreamMenu = (
-    <Menu
-      id="long-menu"
-      anchorEl={anchorEl}
-      keepMounted
-      open={Boolean(anchorEl)}
-      onClose={handleMenuOpen}
-      PaperProps={{
-        style: {
-          maxHeight: ITEM_HEIGHT * 4.5,
-          width: '15ch',
-        },
-      }}
-    >
-      <UpdateScream screamId={screamId} scream={scream}/>
-      <DeleteScream screamId={screamId}/>
-    </Menu>
-  );
-
-
   const likeButton = !authenticated ? (
     <Link to="/login">
       <IconButton
@@ -235,6 +217,25 @@ const ScreamItem = props => {
     </Tooltip>
   );
 
+  const MenuItems = (
+    <Menu
+      id="long-menu"
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleMenuOpen}
+      PaperProps={{
+        style: {
+          maxHeight: ITEM_HEIGHT * 4.5,
+          width: '15ch',
+        },
+      }}
+    >
+      <EditDialog screamId={screamId} scream={scream}/>
+      <DeleteDialog screamId={screamId}/>
+    </Menu>
+  );
+
   const commentLoader = (
     <CircularProgress 
       className={classes.progress}
@@ -263,7 +264,7 @@ const ScreamItem = props => {
               to={`/users/${scream.userHandle}`}
             >
               <Avatar 
-                aria-label="recipe" 
+                aria-label="recipe"
                 className={classes.avatar}
                 src={scream.userImage} 
               />
@@ -280,7 +281,7 @@ const ScreamItem = props => {
               >
                 <MoreVertIcon />
               </IconButton>
-            )            
+            )
           }
           title={
             <Link
@@ -342,9 +343,9 @@ const ScreamItem = props => {
             <Divider className={classes.divider}/>
             {scream.comments ? (
               <div className={classes.comments}>
-                {scream.comments.map(comment => (
+                {scream.comments.map((comment, i) => (
                   <CommentBubble
-                    key={comment.id}
+                    key={i}
                     comment={comment}
                     authenticated={authenticated}
                     authenticatedUser={credentials.handle}
@@ -357,7 +358,7 @@ const ScreamItem = props => {
           </CardContent>
         </Collapse>
       </div>
-      {ScreamMenu}
+      {MenuItems}
     </Card>
   );
 };

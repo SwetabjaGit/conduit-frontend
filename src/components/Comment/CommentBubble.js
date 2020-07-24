@@ -11,8 +11,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 
 // Components
-import EditComment from './EditComment';
-import DeleteComment from './DeleteComment';
+import EditDialog from './EditDialog';
+import DeleteDialog from './DeleteDialog';
 
 
 const useStyles = makeStyles(theme => ({
@@ -67,7 +67,7 @@ const CommentBubble = props => {
     handleMenuClose();
   };
 
-  const CommentMenu = (
+  const MenuItems = (
     <Menu
       id="long-menu"
       anchorEl={anchorEl}
@@ -81,10 +81,11 @@ const CommentBubble = props => {
         },
       }}
     >
-      <EditComment commentId={comment.id} comment={comment}/>
-      <DeleteComment commentId={comment.id}/>
+      <EditDialog commentId={comment.id} comment={comment}/>
+      <DeleteDialog commentId={comment.id}/>
     </Menu>
   );
+
 
   return (
     <div className={classes.root}>
@@ -132,7 +133,7 @@ const CommentBubble = props => {
             >
               <MoreVertIcon />
             </IconButton>
-            {CommentMenu}
+            {MenuItems}
           </div>
         )
       }

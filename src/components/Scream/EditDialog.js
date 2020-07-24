@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const UpdateScream = (props) => {
+const EditDialog = (props) => {
   const { screamId, scream } = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -87,7 +87,7 @@ const UpdateScream = (props) => {
             label="Multiline"
             multiline
             rowsMax={4}
-            value={editedBody}
+            value={editedBody.data}
             onChange={handleTextChange}
             variant="outlined"
           />
@@ -106,7 +106,7 @@ const UpdateScream = (props) => {
 };
 
 
-UpdateScream.propTypes = {
+EditDialog.propTypes = {
   editScream: PropTypes.func.isRequired,
   screamId: PropTypes.string.isRequired,
 };
@@ -122,4 +122,4 @@ const mapActionsToProps = {
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(UpdateScream);
+)(EditDialog);

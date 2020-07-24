@@ -202,7 +202,7 @@ const ScreamDialog = (props) => {
           component="img"
           alt="ContentImage"
           className={classes.media}
-          image={contentImage}
+          src={contentImage}
           title="ContentImage"
         />
       </CardActionArea>

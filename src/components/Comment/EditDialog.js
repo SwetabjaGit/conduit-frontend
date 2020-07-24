@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const EditComment = (props) => {
+const EditDialog = (props) => {
   const { commentId, comment } = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -106,7 +106,7 @@ const EditComment = (props) => {
 };
 
 
-EditComment.propTypes = {
+EditDialog.propTypes = {
   editComment: PropTypes.func.isRequired,
   commentId: PropTypes.string.isRequired,
 };
@@ -122,4 +122,4 @@ const mapActionsToProps = {
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(EditComment);
+)(EditDialog);
