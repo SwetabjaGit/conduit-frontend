@@ -89,8 +89,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         screams: [
-          ...state.screams,
-          action.payload
+          action.payload,
+          ...state.screams
         ]
       };
     case EDIT_SCREAM:
@@ -99,7 +99,7 @@ export default (state = initialState, action) => {
         screams: state.screams.map(
           (scream) => scream.id === action.payload.screamId ? {
             ...scream,
-            body: action.payload.text
+            body: action.payload.data
           } : scream
         )
       };
@@ -107,16 +107,16 @@ export default (state = initialState, action) => {
       return {
         ...state,
         screams: state.screams.filter(
-          (scream) => scream.screamId !== action.payload 
+          (scream) => scream.id !== action.payload
         )
       };
     case LIKE_SCREAM:
     case UNLIKE_SCREAM:
       let index = state.screams.findIndex(
-        (scream) => action.payload.screamId === scream.screamId
+        (scream) => action.payload.screamId === scream.id
       );
       state.screams[index] = action.payload;
-      if (state.scream.screamId === action.payload.screamId) {
+      if (state.scream.id === action.payload.screamId) {
         state.scream = action.payload;
       }
       return {

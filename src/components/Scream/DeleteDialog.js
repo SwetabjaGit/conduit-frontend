@@ -10,11 +10,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 // Redux Stuff
 import { connect } from 'react-redux';
-import { deleteComment } from '../../redux/actions/dataActions';
+import { deleteScream } from '../../redux/actions/dataActions';
 
 
-const DeleteComment = (props) => {
-  const { commentId } = props;
+const DeleteDialog = (props) => {
+  const { screamId } = props;
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -26,13 +26,13 @@ const DeleteComment = (props) => {
   };
 
   const deleteScream = () => {
-    props.deleteComment(commentId);
+    props.deleteScream(screamId);
     setOpen(false);
   };
 
 
   return (
-    <div ref={props.innerRef}>
+    <div>
       <MenuItem onClick={handleOpen}>Delete</MenuItem>
       <Dialog
         open={open}
@@ -41,7 +41,7 @@ const DeleteComment = (props) => {
         maxWidth="sm"
       >
         <DialogTitle>
-          Are you sure you want to delete this comment?
+          Are you sure you want to delete this scream?
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -56,9 +56,9 @@ const DeleteComment = (props) => {
   )
 };
 
-DeleteComment.propTypes = {
-  deleteComment: PropTypes.func.isRequired,
-  commentId: PropTypes.string.isRequired,
+DeleteDialog.propTypes = {
+  deleteScream: PropTypes.func.isRequired
+  //screamId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -66,10 +66,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-  deleteComment
+  deleteScream
 };
 
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(DeleteComment);
+)(DeleteDialog);

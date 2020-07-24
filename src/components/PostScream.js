@@ -55,7 +55,7 @@ const styles = (theme) => ({
 
 const PostScream = (props) => {
 
-  const { classes, UI: {loading}, postScream } = props;
+  const { classes, UI: { loading } } = props;
   const [newScream, setNewScream] = useState({});
   const [errors, setErrors] = useState({});
   const [open, setOpen] = useState(false);
@@ -68,7 +68,7 @@ const PostScream = (props) => {
     if (!props.UI.errors && !props.UI.loading) {
       setOpen(false);
       setErrors({});
-      setNewScream({ 
+      setNewScream({
         body: '',
         tagList: 'pubg, esports, singapore',
         image: null,
@@ -116,7 +116,8 @@ const PostScream = (props) => {
     formData.append('body', newScream.body);
     formData.append('tagList', newScream.tagList);
     console.log('FormData: ', formData);
-    postScream(formData); 
+    props.postScream(formData);
+    handleClose();
   };
 
 

@@ -73,7 +73,6 @@ export const clearScream = () => (dispatch) => {
 
 // Post a scream
 export const postScream = (formData) => (dispatch) => {
-  dispatch({ type: LOADING_UI });
   const config = {
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -85,19 +84,16 @@ export const postScream = (formData) => (dispatch) => {
         type: POST_SCREAM,
         payload: res.data
       });
-      dispatch(clearErrors());
-      dispatch({ type: STOP_LOADING_UI });
     })
     .catch((err) => {
-      dispatch(setErrors(err));
-      dispatch({ type: STOP_LOADING_UI });
+      console.log(err);
     });
 };
 
 export const editScream = (scream) => (dispatch) => {
   axios.put(`/scream/${scream.screamId}`, scream)
     .then((res) => {
-      console.log(res.data);
+      console.log(`%c ${JSON.stringify(res.data)}`, 'color: orange');
       dispatch({
         type: EDIT_SCREAM,
         payload: res.data

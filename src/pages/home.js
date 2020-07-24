@@ -60,6 +60,7 @@ const Home = (props) => {
     if(nextHref){
       screamsUrl = nextHref;
     }
+    console.log('%c SCREAMS REFRESHED', 'color: green; font-weight: bold');
     props.fetchScreams(screamsUrl);
   };
 
