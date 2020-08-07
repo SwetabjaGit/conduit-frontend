@@ -1,5 +1,5 @@
-# Socialape
-Socialape is a simple web app covering most of the concepts of a microblogginng site.
+# Conduit
+Conduit is a simple web app covering most of the concepts of a social networking site.
 
 ## Netlify Server
 https://conduit997.netlify.app
