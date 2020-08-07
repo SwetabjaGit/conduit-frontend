@@ -2,10 +2,10 @@
 Socialape is a simple web app covering most of the concepts of a microblogginng site.
 
 ## Netlify Server
-https://socialape-frontend.netlify.app
+https://conduit997.netlify.app
 
 ## Zeit Server
-https://socialape-frontend.now.sh
+https://conduit997.now.sh
 
 # Features:
 1. Signup and Login for user
