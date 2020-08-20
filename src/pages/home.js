@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useHistory } from 'react-router-dom';
+
 
 // Components
 //import Scream from '../components/Scream';
@@ -37,7 +39,6 @@ const styles = (theme) => ({
 
 
 const Home = (props) => {
-
   const {
     classes,
     screams,
@@ -45,6 +46,13 @@ const Home = (props) => {
     nextHref,
     hasMoreItems
   } = props;
+  const history = useHistory();
+
+  useEffect(() => {
+    history.listen((location) => {
+      console.log(`%c ${location.pathname}`, 'color: green');
+    });
+  }, []);
 
   const loader = (
     <CircularProgress

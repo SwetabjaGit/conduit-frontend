@@ -1,6 +1,6 @@
 {
-  "name": "socialape-frontend",
-  "homepage": "https://socialape-frontend.netlify.app/",
+  "name": "conduit-frontend",
+  "homepage": "https://conduit997.netlify.app/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,6 +12,7 @@
     "colors": "^1.4.0",
     "dayjs": "^1.8.17",
     "dotenv": "^8.2.0",
+    "history": "^5.0.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.27.0",
     "react": "^16.12.0",
