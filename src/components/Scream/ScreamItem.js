@@ -137,8 +137,6 @@ const ScreamItem = props => {
   const [likes, setLikes] = useState(scream.likeCount);
   const [anchorEl, setAnchorEl] = useState(null);
   const ITEM_HEIGHT = 48;
-  const editRef = useRef(null);
-  const deleteRef = useRef(null);
 
   
   useEffect(() => {
